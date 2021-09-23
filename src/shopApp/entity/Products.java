@@ -1,4 +1,4 @@
-package entity;
+package shopApp.entity;
 
 import java.sql.Timestamp;
 

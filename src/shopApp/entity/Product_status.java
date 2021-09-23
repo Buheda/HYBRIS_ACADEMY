@@ -1,4 +1,4 @@
-package entity;
+package shopApp.entity;
 
 public enum Product_status {
 	out_of_stock,

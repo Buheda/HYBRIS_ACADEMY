@@ -1,9 +1,11 @@
+package shopApp;
 import java.sql.*;
-import java.util.Properties;  
+import java.util.Properties;
+import shopApp.dao.*;
 
 public class ShopApplication {
 	public static void main(String[] args) {
-		try {
+		/*try {
 			Properties prop = Settings.getDbConfig();
 			Class.forName("com.mysql.jdbc.Driver");		
 			Connection connection = DriverManager.getConnection(prop.getProperty("db.url"),prop.getProperty("db.user"),prop.getProperty("db.password"));
@@ -12,7 +14,7 @@ public class ShopApplication {
 			connection.close();			
 		} catch(Exception e){ 
 			System.out.println(e);
-		}
+		}*/
 	}
 
 }

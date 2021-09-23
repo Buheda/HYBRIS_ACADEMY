@@ -1,4 +1,4 @@
-package entity;
+package shopApp.entity;
 
 public class Order_items {
 
