@@ -1,5 +1,5 @@
 package db;
 
 public interface Database {
-	public boolean createDatabase(); 
+	public boolean createDatabase() throws Exception; 
 }

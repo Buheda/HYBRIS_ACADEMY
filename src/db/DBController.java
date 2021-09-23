@@ -1,22 +1,22 @@
 package db;
 
+import java.util.Properties;
 import java.io.FileInputStream;
 import java.io.InputStream;
-import java.util.Properties;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 
 public class DBController {
-	private static DBController dbUitlInstance = null;
 	
-	private static Connection connection;
+	private static DBController instance = null;
+	private static Properties connectionProperties = null;
+	private static Connection connection = null;
 	private static Database db;
-
-	private DBController() throws Exception{
+	
+	private DBController() throws Exception {
 		try {
 			InputStream input = new FileInputStream("local.properties");
-			Properties connectionProperties = new Properties();
+			connectionProperties = new Properties();
 			connectionProperties.load(input);
 					
 	        if ("hsqldb".equals(connectionProperties.getProperty("db.type"))) {
@@ -26,32 +26,41 @@ public class DBController {
 	        else if ("mysql".equals(connectionProperties.getProperty("db.type"))) {
 			    Class.forName("com.mysql.jdbc.Driver");
 		        db = new Database_MySql();
-	        }
-	        //else 
-	        	//throw InvalidPropertyException
-	        connection = DriverManager.getConnection(
-				connectionProperties.getProperty("db.url"),
-				connectionProperties.getProperty("db.user"),
-				connectionProperties.getProperty("db.password"));
+	        } 
+	        else
+	        	throw new IllegalArgumentException("Incorrect database type");	    
 		} catch (Exception e) {
-			System.out.println("Couldn't connect to database: " + e);
+			System.err.println("Couldn't read connection properties: " + e.getMessage() + "\n");
+			connectionProperties = null;
 			throw e;
 		}
 	};
 		
-	private static void checkDBUtilInstance() throws Exception {
-		if (dbUitlInstance == null) {
-			dbUitlInstance = new DBController();
+	private static void checkDBConnection() throws Exception {
+		if (instance == null) {
+			instance = new DBController();
+		}
+		
+		try {
+			if ((null != connectionProperties) && (null == connection || connection.isClosed())) {
+				connection = DriverManager.getConnection(
+					connectionProperties.getProperty("db.url"),
+					connectionProperties.getProperty("db.user"),
+					connectionProperties.getProperty("db.password"));
+			}
+		} catch (Exception e) {
+			System.err.println("Couldn't connect to database: " + e.getMessage() + "\n");
+			throw e;
 		}
 	}
-	
+		
 	public static Connection getConnection() throws Exception {
-		checkDBUtilInstance();
+		checkDBConnection();
 		return connection;
 	}
 	
 	public static Database getDB() throws Exception {
-		checkDBUtilInstance();
+		checkDBConnection();
 		return db;	
 	}
 }

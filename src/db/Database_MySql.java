@@ -8,8 +8,8 @@ import java.sql.Statement;
 public class Database_MySql implements Database {
 
 	@Override
-	public boolean createDatabase() {
-		String curTable = "";
+	public boolean createDatabase() throws Exception {
+		String curTable = "Tables";
 		try {
 			return CreateTable_Order(curTable) &&
 					CreateTable_OrderItems(curTable) &&
@@ -18,11 +18,12 @@ public class Database_MySql implements Database {
 		catch (Exception e) {
 	    	System.err.println(curTable + " couldn't be created because: ");
 			System.err.println(e);
-			return false;
+			throw e;
 		}
 	}
 
 	private boolean CreateTable_Order(String curTableName) throws SQLException, Exception {
+		boolean isTableExist = false;
 		curTableName = "ORDERS";
 		
 		Statement stmt =  DBController.getConnection().createStatement();
@@ -40,14 +41,16 @@ public class Database_MySql implements Database {
             String tName = rs.getString("TABLE_NAME");
             if (tName != null && tName.equals(curTableName)) {
             	System.out.println(curTableName+" exist");
-            	return true;
+            	isTableExist = true;
             }
         }
- 	    
-		return false;
+		rs.close();
+		stmt.close();
+		return isTableExist;
 	}
 	
 	private boolean CreateTable_OrderItems(String curTableName) throws SQLException, Exception {
+		boolean isTableExist = false;
 		curTableName = "ORDE_ITEMS";
 		
 		Statement stmt =  DBController.getConnection().createStatement();
@@ -64,14 +67,16 @@ public class Database_MySql implements Database {
             String tName = rs.getString("TABLE_NAME");
             if (tName != null && tName.equals(curTableName)) {
             	System.out.println(curTableName+" exist");
-            	return true;
+            	isTableExist = true;
             }
         }
- 	    
-		return false;
+		rs.close();
+		stmt.close();
+		return isTableExist;
 	};
 	
 	private boolean CreateTable_Products(String curTableName) throws SQLException, Exception {
+		boolean isTableExist = false;
 		curTableName = "PRODUCTS";
 		
 		Statement stmt =  DBController.getConnection().createStatement();
@@ -90,11 +95,12 @@ public class Database_MySql implements Database {
             String tName = rs.getString("TABLE_NAME");
             if (tName != null && tName.equals(curTableName)) {
             	System.out.println(curTableName+" exist");
-            	return true;
+            	isTableExist = true;
             }
         }
- 	    
-		return false;
+		rs.close();
+		stmt.close();
+		return isTableExist;
 	};
 
 }
