@@ -1,14 +1,16 @@
-package db;
+package db.creator;
 
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class Database_MySql implements Database {
+import db.DBConnection;
+
+public class DB_MySql implements DB {
 
 	@Override
-	public boolean createDatabase() throws Exception {
+	public boolean createTables() throws Exception {
 		String curTable = "Tables";
 		try {
 			return CreateTable_Order(curTable) &&
@@ -26,7 +28,7 @@ public class Database_MySql implements Database {
 		boolean isTableExist = false;
 		curTableName = "ORDERS";
 		
-		Statement stmt =  DBController.getConnection().createStatement();
+		Statement stmt =  DBConnection.getConnection().createStatement();
 		stmt.executeUpdate("CREATE TABLE IF NOT EXISTS `"+curTableName+"` ("
 				+ " `id` int NOT NULL AUTO_INCREMENT,"
 				+ " `user_id` int NOT NULL,"
@@ -34,7 +36,7 @@ public class Database_MySql implements Database {
 				+ " `created_at` varchar(255) NOT NULL,"
 				+ " PRIMARY KEY (`id`)"
 				+ ")");  
-	    DatabaseMetaData databaseMetaData = DBController.getConnection().getMetaData();
+	    DatabaseMetaData databaseMetaData = DBConnection.getConnection().getMetaData();
 		ResultSet rs = databaseMetaData.getTables(null, null, curTableName, new String[] {"TABLE"});
 		
  	    while (rs.next()) {
@@ -53,14 +55,14 @@ public class Database_MySql implements Database {
 		boolean isTableExist = false;
 		curTableName = "ORDE_ITEMS";
 		
-		Statement stmt =  DBController.getConnection().createStatement();
+		Statement stmt =  DBConnection.getConnection().createStatement();
 		stmt.executeUpdate("CREATE TABLE IF NOT EXISTS `"+curTableName+"` ("
 				+ "  `order_id` int NOT NULL,"
 				+ "  `product_id` int NOT NULL,"
 				+ "  `quantity` int NOT NULL,"
 				+ "  UNIQUE KEY `order_id` (`order_id`)"
 				+ ")");  
-	    DatabaseMetaData databaseMetaData = DBController.getConnection().getMetaData();
+	    DatabaseMetaData databaseMetaData = DBConnection.getConnection().getMetaData();
 		ResultSet rs = databaseMetaData.getTables(null, null, curTableName, new String[] {"TABLE"});
 		
  	    while (rs.next()) {
@@ -79,7 +81,7 @@ public class Database_MySql implements Database {
 		boolean isTableExist = false;
 		curTableName = "PRODUCTS";
 		
-		Statement stmt =  DBController.getConnection().createStatement();
+		Statement stmt =  DBConnection.getConnection().createStatement();
 		stmt.executeUpdate("CREATE TABLE IF NOT EXISTS `"+curTableName+"` ("
 			+ "  `id` int NOT NULL AUTO_INCREMENT,"
 			+ "  `name` varchar(255) NOT NULL,"
@@ -88,7 +90,7 @@ public class Database_MySql implements Database {
 			+ "  `created_at` datetime NOT NULL,"
 			+ "  PRIMARY KEY (`id`)"
 			+ ")");  
-	    DatabaseMetaData databaseMetaData = DBController.getConnection().getMetaData();
+	    DatabaseMetaData databaseMetaData = DBConnection.getConnection().getMetaData();
 		ResultSet rs = databaseMetaData.getTables(null, null, curTableName, new String[] {"TABLE"});
 		
  	    while (rs.next()) {

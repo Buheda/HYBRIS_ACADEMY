@@ -1,12 +1,13 @@
 package dbApp;
 
-import db.DBController;
+import db.DBConnection;
+import db.creator.Factory;
 
 public class CheckDB  {	
 
 	public static void main(String[] args) throws Exception {
-		DBController.getDB().createDatabase();
-		DBController.getConnection().close();
+		Factory.getDBCreator().createTables();
+		DBConnection.getConnection().close();
 	}
 }
 
