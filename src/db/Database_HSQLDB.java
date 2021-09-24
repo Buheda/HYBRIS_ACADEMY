@@ -14,7 +14,8 @@ public class Database_HSQLDB implements Database {
 		try {
 			return CreateTable_Order(curTable) &&
 					CreateTable_OrderItems(curTable) &&
-					CreateTable_Products(curTable);
+					CreateTable_Products(curTable) && 
+					CreateTable_ProductsStatus(curTable);
 		}
 		catch (Exception e) {
 	    	System.err.println(curTable + " couldn't be created because: ");
@@ -81,7 +82,7 @@ public class Database_HSQLDB implements Database {
 		return isTableExist;
 	};
 	
-	private boolean CreateTable_Products(StringBuilder curTableName) throws SQLException, Exception {
+	private boolean CreateTable_Products(StringBuilder curTableName) throws Exception {
 		boolean isTableExist = false;
 		curTableName = new StringBuilder("PRODUCTS");
 		
@@ -103,6 +104,36 @@ public class Database_HSQLDB implements Database {
             if (tName != null && tName.equals(curTableName.toString())) {
             	System.out.println(curTableName+" exist");
             	isTableExist = true;
+            }
+        }
+		rs.close();
+		stmt.close();
+		return isTableExist;
+	};
+	
+	private boolean CreateTable_ProductsStatus(StringBuilder curTableName) throws Exception {
+		boolean isTableExist = false;
+		curTableName = new StringBuilder("PRODUCTS_STATUS");
+		
+		Statement stmt =  DBController.getConnection().createStatement();
+		stmt.executeUpdate("CREATE TABLE IF NOT EXISTS "+curTableName+" ("
+				+ "  id int NOT NULL IDENTITY,"
+				+ "  status varchar(255) NOT NULL,"
+				+ "  PRIMARY KEY (id)"
+				+ ")");
+		
+		DatabaseMetaData databaseMetaData = DBController.getConnection().getMetaData();
+		ResultSet rs = databaseMetaData.getTables(null, null, curTableName.toString(), new String[] {"TABLE"});
+		
+ 	    while (rs.next()) {
+            String tName = rs.getString("TABLE_NAME");
+            if (tName != null && tName.equals(curTableName.toString())) {
+            	System.out.println(curTableName+" exist");
+            	isTableExist = true;
+            	stmt.executeUpdate("DELETE FROM "+curTableName);
+            	stmt.executeUpdate("INSERT INTO "+curTableName+" (id, status) VALUES (0, 'out_of_stock')");
+            	stmt.executeUpdate("INSERT INTO "+curTableName+" (id, status) VALUES (1, 'in_stock')");
+            	stmt.executeUpdate("INSERT INTO "+curTableName+" (id, status) VALUES (2, 'running_low')");
             }
         }
 		rs.close();

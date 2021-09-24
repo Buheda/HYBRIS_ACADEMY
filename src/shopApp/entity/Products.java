@@ -10,11 +10,11 @@ public class Products {
 
 	int price;
 
-	Product_status status;
+	Products_status status;
 
 	Timestamp created_at;
 
-	public Products(int id, String name, int price, Product_status status, Timestamp created_at) {
+	public Products(int id, String name, int price, Products_status status, Timestamp created_at) {
 		this.id = id;
 		this.name = name;
 		this.price = price;
@@ -46,11 +46,11 @@ public class Products {
 		this.price = price;
 	}
 
-	public Product_status getStatus() {
+	public Products_status getStatus() {
 		return status;
 	}
 
-	public void setStatus(Product_status status) {
+	public void setStatus(Products_status status) {
 		this.status = status;
 	}
 

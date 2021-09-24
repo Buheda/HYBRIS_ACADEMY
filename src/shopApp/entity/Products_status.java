@@ -1,6 +1,6 @@
 package shopApp.entity;
 
-public enum Product_status {
+public enum Products_status {
 	out_of_stock,
 	in_stock,
 	running_low;
