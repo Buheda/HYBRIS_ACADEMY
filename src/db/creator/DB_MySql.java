@@ -5,7 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import db.DBConnection;
+import db.*;
 
 public class DB_MySql implements DB {
 

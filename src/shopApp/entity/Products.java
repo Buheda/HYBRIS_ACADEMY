@@ -4,15 +4,15 @@ import java.sql.Timestamp;
 
 public class Products {
 
-	int id;
+	private int id;
 
-	String name;
+	private String name;
 
-	int price;
+	private int price;
 
-	Products_status status;
+	private Products_status status;
 
-	Timestamp created_at;
+	private Timestamp created_at;
 
 	public Products(int id, String name, int price, Products_status status, Timestamp created_at) {
 		this.id = id;
