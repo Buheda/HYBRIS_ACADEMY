@@ -1,9 +1,11 @@
 package db.queries;
 
+import java.util.HashMap;
+
 public class UpdateOrderCommand implements Command {
 
 	@Override
-	public boolean execute() {
+	public boolean execute(HashMap<String, String> params) {
 		// TODO Auto-generated method stub
 		return false;
 	}

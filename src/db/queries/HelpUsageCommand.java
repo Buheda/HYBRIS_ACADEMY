@@ -1,5 +1,7 @@
 package db.queries;
 
+import java.util.HashMap;
+
 public class HelpUsageCommand implements Command {
 
 	public static void ShowUsageInfo() {
@@ -22,7 +24,7 @@ public class HelpUsageCommand implements Command {
 	}
 	
 	@Override
-	public boolean execute() {
+	public boolean execute(HashMap<String, String> params) {
 		ShowUsageInfo();	
 		return true;
 	}
