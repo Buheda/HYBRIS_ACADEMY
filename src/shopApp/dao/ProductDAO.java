@@ -1,8 +1,11 @@
 package shopApp.dao;
 
+import shopApp.entity.Products;
+
 public class ProductDAO {
 
-	public void CreateProduct() {
+	public static boolean CreateProduct(Products product) {
+		return false;
 	}
 
 	public void GetAllProductsList() {

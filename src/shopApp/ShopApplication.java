@@ -12,7 +12,7 @@ public class ShopApplication {
 		String commandLine = scanner.nextLine();
 		String[] commandsArr = commandLine.split(" ");
 		
-		Command command = null;
+		Command command = new UnknownCommand();
 		HashMap<Command, HashMap<String,String>> resultHashMap = null;	
 		boolean isCmdParsed = true;
 		HashMap<String, String> cmdParamsList = null;
@@ -50,6 +50,8 @@ public class ShopApplication {
 				break;
 			default:
 				command = new UnknownCommand();
+				isCmdParamsShouldBeParsed = false;
+				break;
 		}
 		
 		if (isCmdParamsShouldBeParsed) {
@@ -74,16 +76,16 @@ public class ShopApplication {
 		return resultHashMap;
 	}
 	
-	public static void main(String[] args) {
+	public static void main(String[] args)  {
 		HelpUsageCommand.ShowUsageInfo();
 		HashMap<Command, HashMap<String,String>> command = null;
 		while (true){
 			command = getCommand();
-			if (null != command) {
+			try {
 				command.entrySet().iterator().next().getKey().execute(command.entrySet().iterator().next().getValue());
+			} catch (Exception e) {
+				System.err.println(e);
 			}
-			else
-				System.err.println("Not enought parameters");
 		}  
 	}
 
