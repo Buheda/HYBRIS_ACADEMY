@@ -1,18 +1,16 @@
 package core.commands;
 
-import java.util.HashMap;
-
-public class RemoveProductCommand implements Command {
+public class RemoveProductCommand extends BaseCommandImp implements Command {
 
 	@Override
-	public boolean isParamsOk(HashMap<String, String> params) {
-		// TODO Auto-generated method stub
+	protected boolean isParamsValid() {
 		return true;
 	}
-
+	
 	@Override
-	public boolean execute(HashMap<String, String> params) {
+	public boolean execute() throws Exception {
 		// TODO Auto-generated method stub
 		return false;
 	}
+
 }

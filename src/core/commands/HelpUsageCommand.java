@@ -1,11 +1,9 @@
 package core.commands;
 
-import java.util.HashMap;
+public class HelpUsageCommand  extends BaseCommandImp implements Command {
 
-public class HelpUsageCommand implements Command {
-	
 	@Override
-	public boolean isParamsOk(HashMap<String, String> params) {
+	protected boolean isParamsValid() {
 		return true;
 	}
 
@@ -29,7 +27,7 @@ public class HelpUsageCommand implements Command {
 	}
 	
 	@Override
-	public boolean execute(HashMap<String, String> params) {
+	public boolean execute() {
 		ShowUsageInfo();	
 		return true;
 	}

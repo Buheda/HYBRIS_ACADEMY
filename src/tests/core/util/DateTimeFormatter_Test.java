@@ -10,7 +10,7 @@ import org.junit.Test;
 
 import core.util.DateTimeFormatter;
 
-public class DateTimeFormatter_Tests {
+public class DateTimeFormatter_Test {
 	
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("YYYY-MM-dd HH:mm");
 
@@ -24,7 +24,7 @@ public class DateTimeFormatter_Tests {
 	@Test
 	public void timestampToStr() {
 		Timestamp expected = new Timestamp(System.currentTimeMillis());
-		Timestamp actual = DateTimeFormatter.getNow();
+		Timestamp actual = core.util.DateTimeFormatter.getNow();
 		assertEquals(DateTimeFormatter.timestampToStr(actual), dateFormat.format(expected));
 	}
 }

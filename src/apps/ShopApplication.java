@@ -6,85 +6,77 @@ import java.util.Scanner;
 import core.commands.*;
 
 public class ShopApplication {
-	private Scanner scanner;
 	
-	private static HashMap<Command, HashMap<String,String>> getCommand(){
+	private static Command getCommand(){
 		System.out.println("Please input command:");
 		Scanner scanner = new Scanner(System.in);
 		String commandLine = scanner.nextLine();
 		String[] commandsArr = commandLine.split(" ");
 		
-		Command command = new UnknownCommand();
-		HashMap<Command, HashMap<String,String>> resultHashMap = null;	
-		boolean isCmdParsed = true;
+		Command resultCommand = new UnknownCommand();
 		HashMap<String, String> cmdParamsList = null;
 		boolean isCmdParamsShouldBeParsed = commandsArr.length % 2 != 0;
 
 		switch (commandsArr[0].toLowerCase()) {
 			case "help": 
-				command = new HelpUsageCommand();
+				resultCommand = new HelpUsageCommand();
 				isCmdParamsShouldBeParsed = false;
 				break;
 			case "exit":
-				command = new ExitApplicationCommand();
+				resultCommand = new ExitApplicationCommand();
 				isCmdParamsShouldBeParsed = false;
 				break;
 			case "create_product":
-				command = new CreateProductCommand();
+				resultCommand = new CreateProductCommand();
 				break;
 			case "create_order":
-				command = new CreateOrderCommand();
+				resultCommand = new CreateOrderCommand();
 				break;
 			case "update_order":
-				command = new UpdateOrderCommand();
+				resultCommand = new UpdateOrderCommand();
 				break;
 			case "show_orders":
-				command = new ShowOrdersCommand();
+				resultCommand = new ShowOrdersCommand();
 				break;
 			case "show_products":
-				command = new ShowProductsCommand();
+				resultCommand = new ShowProductsCommand();
 				break;
 			case "remove_products":
-				command = new RemoveProductCommand();
+				resultCommand = new RemoveProductCommand();
 				break;					
 			case "remove_all_products":
-				command = new RemoveAllProductsCommand();
+				resultCommand = new RemoveAllProductsCommand();
 				break;
 			default:
-				command = new UnknownCommand();
+				resultCommand = new UnknownCommand();
 				isCmdParamsShouldBeParsed = false;
 				break;
 		}
 		
 		if (isCmdParamsShouldBeParsed) {
 			cmdParamsList = new HashMap<>();
-			if (null != command) {
+			if (null != resultCommand) {
 				for (int i=1;i<commandsArr.length;i=i+2) {
 					if (commandsArr[i].startsWith("--")) {
 						cmdParamsList.put(commandsArr[i].replaceFirst("^--", ""), commandsArr[i+1]);
 					} else {
-						isCmdParsed = false;
 						break;
 					}
 				}
 			}
 		}
 		
-		if (isCmdParsed) {
-			resultHashMap = new HashMap<>();
-			resultHashMap.put(command, cmdParamsList);
-		}
-		
-		return resultHashMap;
+		resultCommand.setParams(cmdParamsList);
+		return resultCommand;
 	}
 	
 	public static void main(String[] args)  {
 		HelpUsageCommand.ShowUsageInfo();
-		HashMap<Command, HashMap<String,String>> command = null;
+		Command command = null;
 		while (true){
 			command = getCommand();
 			try {
-				command.entrySet().iterator().next().getKey().execute(command.entrySet().iterator().next().getValue());
+				command.execute();
 			} catch (Exception e) {
 				System.err.println(e);
 			}

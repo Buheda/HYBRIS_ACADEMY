@@ -2,16 +2,15 @@ package core.commands;
 
 import java.util.HashMap;
 
-public class ShowProductsCommand implements Command {
+public class ShowProductsCommand extends BaseCommandImp implements Command {
 
 	@Override
-	public boolean isParamsOk(HashMap<String, String> params) {
-		// TODO Auto-generated method stub
+	protected boolean isParamsValid() {
 		return true;
 	}
-
+	
 	@Override
-	public boolean execute(HashMap<String, String> params) {
+	public boolean execute() {
 		// TODO Auto-generated method stub
 		return false;
 	}

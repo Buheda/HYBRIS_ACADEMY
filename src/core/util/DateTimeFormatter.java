@@ -3,7 +3,6 @@ package core.util;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.sql.Date;
 
 public class DateTimeFormatter {
     private static final DateFormat dateFormatter = new SimpleDateFormat("YYYY-MM-dd HH:mm");

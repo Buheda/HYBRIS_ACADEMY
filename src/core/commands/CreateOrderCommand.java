@@ -1,17 +1,14 @@
 package core.commands;
 
-import java.util.HashMap;
-
-public class CreateOrderCommand implements Command {
+public class CreateOrderCommand extends BaseCommandImp implements Command {
 
 	@Override
-	public boolean isParamsOk(HashMap<String, String> params) {
-		// TODO Auto-generated method stub
+	public boolean isParamsValid() {
 		return false;
 	}
 
 	@Override
-	public boolean execute(HashMap<String, String> params) throws Exception {
+	public boolean execute() throws Exception {
 		// TODO Auto-generated method stub
 		return false;
 	}

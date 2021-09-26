@@ -1,64 +1,50 @@
 package core.commands;
 
-import java.security.InvalidParameterException;
 import java.util.HashMap;
 
 import core.db.dao.ProductDAO;
 import core.db.entity.Products;
 import core.db.entity.Products_status;
 import core.util.DateTimeFormatter;
-import core.util.StringUtil;
 
-
-public class CreateProductCommand implements Command {
+public class CreateProductCommand extends BaseCommandImp implements Command {
 
 	@Override
-	public boolean isParamsOk(HashMap<String, String> params) {
-		boolean isProductStatusValid = Integer.parseInt(params.get("status")) >-1 && Integer.parseInt(params.get("status")) < 3; 
-		if (isProductStatusValid && null != params && !StringUtil.isEmptyString(params.get("name"))) {
-			return true; 
-		}
-		else return false;
+	public boolean isParamsValid() {
+		String paramsList[] = {"name", "price", "status"};
+	    return (
+				null != params && 
+				super.checkParamsExist(paramsList) &&
+				Integer.parseInt(params.get("status")) >=0 && 
+				Integer.parseInt(params.get("status")) < 3);
 	}
-	
+
 	@Override
-	public boolean execute(HashMap<String, String> params) throws Exception {
-		boolean isQueryExecuted = false;
-		if (!isParamsOk(params))
-			throw new InvalidParameterException("missing or null parameter. See help");
+	public boolean execute() throws Exception {
+		boolean isQueryExecuted = paramsCheckingProcess();
 		
-		System.out.println("CreateProductCommand.execute(): ");
-		System.out.println(params);
-		Products newProduct = null;
-		
-		try {	
-			int statusInt = Integer.parseInt(params.get("status"));
-			Products_status status = null; 
-			switch (statusInt) {
-				case 0: 
-					status = Products_status.out_of_stock;
-					break;
-				case 1:
-					status = Products_status.in_stock;
-					break;					
-				case 2:
-					status = Products_status.running_low;
-					break;
-				default :
-					status = Products_status.in_stock;					
-			}
-		
-			 newProduct = new Products(
-					params.get("name"), 
-					Integer.parseInt(params.get("price")),
-					status,
-					DateTimeFormatter.getNow());
-			
-		} catch (Exception e) {
-			System.err.println("Incorrect command parameter");
-			throw e;
+		int statusInt = Integer.parseInt(params.get("status"));
+		Products_status status = null; 
+		switch (statusInt) {
+			case 0: 
+				status = Products_status.out_of_stock;
+				break;
+			case 1:
+				status = Products_status.in_stock;
+				break;					
+			case 2:
+				status = Products_status.running_low;
+				break;
+			default :
+				status = Products_status.in_stock;					
 		}
-		System.out.println(newProduct.toString());
+		
+		Products newProduct = new Products(
+			params.get("name"), 
+			Integer.parseInt(params.get("price")),
+			status,
+			DateTimeFormatter.getNow());
+			
 
 		//create_product --name n --price 0 --status 0
 
