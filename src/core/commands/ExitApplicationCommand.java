@@ -3,13 +3,12 @@ package core.commands;
 public class ExitApplicationCommand extends BaseCommandImp implements Command {
 
 	@Override
-	protected boolean isParamsValid() {
+	protected boolean isSpecificParamsIsValid() {
 		return true;
 	}
 	
 	@Override
-	public boolean execute() {
+	public void execute() {
 		System.exit(0);	
-		return true;
 	}
 }

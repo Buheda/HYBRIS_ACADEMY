@@ -41,7 +41,7 @@ public class ShopApplication {
 			case "show_products":
 				resultCommand = new ShowProductsCommand();
 				break;
-			case "remove_products":
+			case "remove_product":
 				resultCommand = new RemoveProductCommand();
 				break;					
 			case "remove_all_products":

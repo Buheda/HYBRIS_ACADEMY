@@ -1,16 +1,24 @@
 package core.commands;
 
+import core.db.dao.ProductDAO;
+
 public class RemoveProductCommand extends BaseCommandImp implements Command {
 
 	@Override
-	protected boolean isParamsValid() {
+	protected boolean isSpecificParamsIsValid() {
+		try {
+			Integer.parseInt(params.get("id"));
+		} catch (Exception e) {
+			return false;
+		}
 		return true;
 	}
 	
 	@Override
-	public boolean execute() throws Exception {
-		// TODO Auto-generated method stub
-		return false;
+	public void execute() throws Exception {
+		int rowsCount = ProductDAO.removeProductsById(0);
+		if (0 == rowsCount) {
+			System.out.printf("There is nothing to delete");
+		}
 	}
-
 }

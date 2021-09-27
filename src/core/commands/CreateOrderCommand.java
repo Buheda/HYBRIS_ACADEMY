@@ -3,14 +3,12 @@ package core.commands;
 public class CreateOrderCommand extends BaseCommandImp implements Command {
 
 	@Override
-	public boolean isParamsValid() {
+	public boolean isSpecificParamsIsValid() {
 		return false;
 	}
 
 	@Override
-	public boolean execute() throws Exception {
-		// TODO Auto-generated method stub
-		return false;
+	public void execute() throws Exception {
 	}
 }
 

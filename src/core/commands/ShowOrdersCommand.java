@@ -3,14 +3,13 @@ package core.commands;
 public class ShowOrdersCommand extends BaseCommandImp implements Command {
 
 	@Override
-	protected boolean isParamsValid() {
-		return true;
+	protected boolean isSpecificParamsIsValid() {
+		return false;		
 	}
 	
 	@Override
-	public boolean execute() {
+	public void execute() {
 		// TODO Auto-generated method stub
-		return false;
 	}
 
 }

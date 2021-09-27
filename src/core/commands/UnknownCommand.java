@@ -3,14 +3,13 @@ package core.commands;
 public class UnknownCommand extends BaseCommandImp implements Command {
 
 	@Override
-	protected boolean isParamsValid() {
+	protected boolean isSpecificParamsIsValid() {
 		return true;
 	}
 	
 	@Override
-	public boolean execute() {
+	public void execute() {
 		System.err.println("Unknown command, see Help");
-		return false;
 	}
 
 }

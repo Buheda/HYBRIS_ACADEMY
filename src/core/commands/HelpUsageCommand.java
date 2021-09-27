@@ -3,7 +3,7 @@ package core.commands;
 public class HelpUsageCommand  extends BaseCommandImp implements Command {
 
 	@Override
-	protected boolean isParamsValid() {
+	protected boolean isSpecificParamsIsValid() {
 		return true;
 	}
 
@@ -24,12 +24,15 @@ public class HelpUsageCommand  extends BaseCommandImp implements Command {
 		System.out.println("  --name <arg>   product name");
 		System.out.println("  --price <arg>  product price, integer");
 		System.out.println("  --status <arg>  0,1,2 (0 - out of stock, 1 - in stock, 2 - running low)");
+		
+		System.out.println("remove_all_products");
+		System.out.println("  --password <arg>   password for removing all products");
+
 	}
 	
 	@Override
-	public boolean execute() {
+	public void execute() {
 		ShowUsageInfo();	
-		return true;
 	}
 
 }

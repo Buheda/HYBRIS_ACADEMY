@@ -1,7 +1,7 @@
 package core.db.entity;
 
+import java.sql.ResultSet;
 import java.sql.Timestamp;
-import java.util.HashMap;
 
 import core.util.DateTimeFormatter;
 
@@ -31,6 +31,10 @@ public class Products {
 		this.price = price;
 		this.status = status;
 		this.created_at = created_at;
+	}
+
+	public Products() {
+		this(0, "", 0, Products_status.out_of_stock, DateTimeFormatter.getNow());
 	}
 
 	public int getId() {
@@ -75,8 +79,30 @@ public class Products {
 
 	@Override
 	public String toString() {
-		return "| " + name + " | " + price + " | " + status + " | ";
+		return "| "+id+" | " + name + " | " + price + " | " + status + " |";
 	}
 	
+	public String toString(int nameFieldLength) throws Exception {
+		String paddedName = name;
+		if (nameFieldLength>0) 
+			paddedName = String.format("%-"+nameFieldLength+"."+ nameFieldLength+"s", paddedName);
+		
+		return "| "+String.format("%-3.3s", id)+
+				" | " + paddedName + 
+				" | " + String.format("%-3.3s", price) + 
+				" | " + String.format("%-12s", status) + " |";
+	}
+	
+	//not good
+	public static String showResultSet(ResultSet rs, int nameFieldLength) throws Exception {
+		String paddedName = rs.getString("name");
+		if (nameFieldLength>0) 
+			paddedName = String.format("%-"+nameFieldLength+"."+ nameFieldLength+"s", paddedName);
+		
+		return "| "+String.format("%-3.3s", rs.getInt("id"))+
+				" | " + paddedName + 
+				" | " + String.format("%-3.3s", rs.getInt("price")) + 
+				" | " + String.format("%-12s", Products_status.fromInteger(rs.getInt("status"))) + " |";
+	}
 	
 }
