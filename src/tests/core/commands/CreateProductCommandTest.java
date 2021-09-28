@@ -80,11 +80,7 @@ public class CreateProductCommandTest {
 	}
 	
 	@Test
-	public void testExecute() throws Exception {
-//		assertTrue(ProductDAO.removeAllProducts(""));
-		
-		CreateProductCommand command = new CreateProductCommand();
-		HashMap<String, String> cmdParamsList = new HashMap<>();
+	public void testExecute_Valid() throws Exception {
 		String name = "n";
 		cmdParamsList.put("name", name);
 		String price = "10";
@@ -98,18 +94,20 @@ public class CreateProductCommandTest {
 		command.execute();
 		cmdParamsList.put("status", "2");
 		command.execute();
-		/*
-		String sql = "SELECT * FROM PRODUCTS where name=? and price=? and status=?";
-		PreparedStatement preparedStatement = DBConnection.getConnection().prepareStatement(sql);
-		preparedStatement.setString(1, name);
-		preparedStatement.setString(2, price);
-		preparedStatement.setString(3, status);
-		ResultSet rs = preparedStatement.executeQuery();
-		assertTrue(rs.next()); 		*/
 	}
 
+	@Test(expected = InvalidAttributeValueException.class)
+	public void testExecute_Invalid() throws Exception {
+		cmdParamsList.put("name", "n");
+		cmdParamsList.put("price", "sdf");
+		cmdParamsList.put("status", "0");
+		command.setParams(cmdParamsList);
+		
+		command.execute();
+	}
+	
 	@Test
-	public void testParamsCheckingProcess_Valid() throws Exception {
+	public void testCheckParams_Valid() throws Exception {
 		cmdParamsList.put("name", "n");
 		cmdParamsList.put("price", "10");
 		cmdParamsList.put("status", "0");
@@ -118,13 +116,13 @@ public class CreateProductCommandTest {
 		command.checkParams(paramsList);
 	}
 	@Test(expected = InvalidAttributesException.class)
-	public void testParamsCheckingProcess_NoParams() throws Exception {
+	public void testCheckParams_NoParams() throws Exception {
 		command.setParams(null);
 		command.checkParams(paramsList);
 	}
 	
 	@Test(expected = InvalidKeyException.class)
-	public void testParamsCheckingProcess_MissingName() throws Exception {
+	public void testCheckParams_MissingName() throws Exception {
 		cmdParamsList.put("price", "10");
 		cmdParamsList.put("status", "1");
 		command.setParams(cmdParamsList);
@@ -133,7 +131,7 @@ public class CreateProductCommandTest {
 	}
 	
 	@Test(expected = InvalidAttributeValueException.class)
-	public void testParamsCheckingProcess_EmptyName() throws Exception {
+	public void testCheckParams_EmptyName() throws Exception {
 		cmdParamsList.put("name", "");
 		cmdParamsList.put("price", "10");
 		cmdParamsList.put("status", "1");
@@ -143,7 +141,7 @@ public class CreateProductCommandTest {
 	}
 	
 	@Test(expected = InvalidKeyException.class)
-	public void testParamsCheckingProcess_MissingStatus() throws Exception {
+	public void testCheckParams_MissingStatus() throws Exception {
 		cmdParamsList.put("name", "asd");
 		cmdParamsList.put("price", "10");
 		command.setParams(cmdParamsList);
@@ -152,7 +150,7 @@ public class CreateProductCommandTest {
 	}
 	
 	@Test(expected = InvalidAttributeValueException.class)
-	public void testParamsCheckingProcess_EmptyStatus() throws Exception {
+	public void testCheckParams_EmptyStatus() throws Exception {
 		cmdParamsList.put("name", "vs");
 		cmdParamsList.put("price", "10");
 		cmdParamsList.put("status", "");
@@ -162,7 +160,7 @@ public class CreateProductCommandTest {
 	}
 	
 	@Test(expected = InvalidKeyException.class)
-	public void testParamsCheckingProcess_MissingPrice() throws Exception {
+	public void testCheckParams_MissingPrice() throws Exception {
 		cmdParamsList.put("name", "dsf");
 		cmdParamsList.put("status", "1");
 		command.setParams(cmdParamsList);
@@ -171,7 +169,7 @@ public class CreateProductCommandTest {
 	}
 	
 	@Test(expected = InvalidAttributeValueException.class)
-	public void testParamsCheckingProcess_EmptyPrice() throws Exception {
+	public void testCheckParams_EmptyPrice() throws Exception {
 		cmdParamsList.put("name", "ns");
 		cmdParamsList.put("price", "");
 		cmdParamsList.put("status", "2");

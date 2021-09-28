@@ -16,7 +16,7 @@ public class RemoveProductCommand extends BaseCommandImp implements Command {
 	
 	@Override
 	public void execute() throws Exception {
-		int rowsCount = ProductDAO.removeProductsById(0);
+		int rowsCount = ProductDAO.removeProductsById(Integer.parseInt(params.get("id")));
 		if (0 == rowsCount) {
 			System.out.printf("There is nothing to delete");
 		}

@@ -29,8 +29,11 @@ public class ShowProductsCommandTest {
 	
 	@Test
 	public void testExecute() throws Exception {
+		TestProductQueries.createTestProduct();
 		command.execute();
 	}
 
-
+	@Test
+	public void testCheckParams() {}
+	
 }

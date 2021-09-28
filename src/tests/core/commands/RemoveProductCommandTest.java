@@ -7,18 +7,17 @@ import java.util.HashMap;
 
 import javax.management.InvalidAttributeValueException;
 import javax.naming.directory.InvalidAttributesException;
-import javax.security.sasl.AuthenticationException;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import core.commands.Command;
-import core.commands.RemoveAllProductsCommand;
+import core.commands.RemoveProductCommand;
 
-public class RemoveAllProductsTest {
+public class RemoveProductCommandTest {
 	
-	class CommandAdapter extends RemoveAllProductsCommand implements Command {
+	class CommandAdapter extends RemoveProductCommand implements Command {
 		
 		@Override
 		public boolean isSpecificParamsIsValid() {
@@ -31,7 +30,7 @@ public class RemoveAllProductsTest {
 		}		
 	};
 	
-	private static final String paramsList[] = {"password"};
+	private static final String paramsList[] = {"id"};
 	CommandAdapter command = new CommandAdapter();
 	HashMap<String, String> cmdParamsList;
 	
@@ -47,40 +46,38 @@ public class RemoveAllProductsTest {
     
 	@Test
 	public void testIsSpecificParamsIsValid() {
-		assertTrue(command.isSpecificParamsIsValid());
-	}
-
-	@Test(expected = AuthenticationException.class)
-	public void testExecute_incorrectPassword() throws Exception {
-		TestProductQueries.createTestProduct();
-		cmdParamsList.put("password", "fa");
+		cmdParamsList.put("id", "1");
 		command.setParams(cmdParamsList);
-		command.execute();
+		assertTrue(command.isSpecificParamsIsValid());
 	}
 
 	@Test
 	public void testExecute_Valid() throws Exception {
-		TestProductQueries.createTestProduct();
-		cmdParamsList.put("password", persistent.FinalProperties.REMOVE_ALL_PRODUCTS_PASSWORD);
-		command.setParams(cmdParamsList);
-		
-		command.execute();
-		assertFalse(TestProductQueries.isProductsExists());
-	}
-	
-	@Test
-	public void testExecute_Valid_noRecordsInDB() throws Exception {
 		TestProductQueries.removeAllProducts();
-		cmdParamsList.put("password", persistent.FinalProperties.REMOVE_ALL_PRODUCTS_PASSWORD);
+		Integer id = TestProductQueries.createTestProduct();
+		assertTrue(TestProductQueries.isProductsExistsById(id));
+		
+		cmdParamsList.put("id", id.toString());
 		command.setParams(cmdParamsList);
 		
 		command.execute();
-		assertFalse(TestProductQueries.isProductsExists());
+		assertFalse(TestProductQueries.isProductsExistsById(id));
+	}
+
+	@Test
+	public void testExecute_InvalidId() throws Exception {
+		Integer id = TestProductQueries.createTestProduct();
+		
+		cmdParamsList.put("id", (++id).toString());
+		command.setParams(cmdParamsList);
+		
+		command.execute();
+		assertFalse(TestProductQueries.isProductsExistsById(id));
 	}
 	
 	@Test
 	public void testCheckParams_Valid() throws Exception {
-		cmdParamsList.put("password", "fa");
+		cmdParamsList.put("id", "10");
 		command.setParams(cmdParamsList);
 		
 		command.checkParams(paramsList);
@@ -94,19 +91,17 @@ public class RemoveAllProductsTest {
 	}
 
 	@Test(expected = InvalidKeyException.class)
-	public void testCheckParams_MissingPassword_no_Params() throws Exception {
+	public void testCheckParams_MIssingId() throws Exception {
 		command.setParams(cmdParamsList);
 
 		command.checkParams(paramsList);
 	}
 	
 	@Test(expected = InvalidAttributeValueException.class)
-	public void testCheckParams_EmptyPassword() throws Exception {
-		cmdParamsList.put("password", "");
+	public void testCheckParams_EmptyId() throws Exception {
+		cmdParamsList.put("id", "");
 		command.setParams(cmdParamsList);
 		
 		command.checkParams(paramsList);
 	}
-	
-
 }

@@ -1,4 +1,4 @@
-package core.db.dao;
+package tests.core.commands;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -6,25 +6,23 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.security.sasl.AuthenticationException;
-
 import core.db.DBConnection;
 import core.db.entity.Products;
 import core.db.entity.Products_status;
+import core.util.DateTimeFormatter;
 
-public class ProductDAO {
+public class TestProductQueries {
 
-	public static int createProduct(Products product) throws Exception {
+	public static int createTestProduct() throws Exception {
 		String sql = "INSERT INTO PRODUCTS (name, price, status, created_at) Values (?, ?, ?, ?)";
 		PreparedStatement preparedStatement = DBConnection.getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-		preparedStatement.setString(1, product.getName());
-		preparedStatement.setInt(2, product.getPrice());
-		preparedStatement.setInt(3, product.getStatus().ordinal());
-		preparedStatement.setTimestamp(4, product.getCreated_at());
-		int result = preparedStatement.executeUpdate(); 
-		preparedStatement.close();
-		return result;
-		/*ResultSet rs = preparedStatement.getGeneratedKeys();
+		preparedStatement.setString(1, "testName");
+		preparedStatement.setInt(2, 10);
+		preparedStatement.setInt(3, 1);
+		preparedStatement.setTimestamp(4, DateTimeFormatter.getNow());
+		preparedStatement.executeUpdate();
+		
+		ResultSet rs = preparedStatement.getGeneratedKeys();
 
 		int result = -1;
 		if (rs.next()) {
@@ -32,25 +30,22 @@ public class ProductDAO {
 		}
 		
 		preparedStatement.close();
-		return result;*/
-	}
-	
-	public static int getAllProducts_MaxLength() throws Exception  {
-		Statement stmt =  DBConnection.getConnection().createStatement();
-		ResultSet rs = stmt.executeQuery("SELECT MAX(LENGTH(name)) as length FROM PRODUCTS");
-		int result = 0;
-		if (rs.next()) {
-			result = rs.getInt("length");
-		}
-		
-		rs.close();
-		stmt.close();
 		return result;
+		
 	}
 	
 	public static boolean isProductsExists() throws Exception {
 		Statement stmt =  DBConnection.getConnection().createStatement();
 		ResultSet rs = stmt.executeQuery("SELECT * FROM PRODUCTS");
+		boolean result = rs.next();
+		rs.close();
+		stmt.close();
+		return result;
+	}
+	
+	public static boolean isProductsExistsById(int id) throws Exception {
+		Statement stmt =  DBConnection.getConnection().createStatement();
+		ResultSet rs = stmt.executeQuery("SELECT * FROM PRODUCTS where id="+id);
 		boolean result = rs.next();
 		rs.close();
 		stmt.close();
@@ -82,19 +77,15 @@ public class ProductDAO {
 
 	public static int removeProductsById(int id) throws Exception {
 		Statement stmt =  DBConnection.getConnection().createStatement();
-		int result = stmt.executeUpdate("DELETE FROM PRODUCTS where ID ="+id);
+		int result = stmt.executeUpdate("DELETE * FROM PRODUCTS where ID ="+id);
 		stmt.close();
 		return result;
 	}
 
-	public static int removeAllProducts(String password) throws Exception {
-		if (persistent.FinalProperties.REMOVE_ALL_PRODUCTS_PASSWORD.equals(password)) {
-			Statement stmt =  DBConnection.getConnection().createStatement();
-			int result = stmt.executeUpdate("DELETE FROM PRODUCTS");
-			stmt.close();
-			return result;
-		} else
-			throw new AuthenticationException ("incorrect password for removing all products");
+	public static int removeAllProducts() throws Exception {
+		Statement stmt =  DBConnection.getConnection().createStatement();
+		int result = stmt.executeUpdate("DELETE FROM PRODUCTS");
+		stmt.close();
+		return result;
 	}
-	
 }

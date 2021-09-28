@@ -94,7 +94,7 @@ public class Products {
 	}
 	
 	//not good
-	public static String showResultSet(ResultSet rs, int nameFieldLength) throws Exception {
+	/*public static String showResultSet(ResultSet rs, int nameFieldLength) throws Exception {
 		String paddedName = rs.getString("name");
 		if (nameFieldLength>0) 
 			paddedName = String.format("%-"+nameFieldLength+"."+ nameFieldLength+"s", paddedName);
@@ -103,6 +103,6 @@ public class Products {
 				" | " + paddedName + 
 				" | " + String.format("%-3.3s", rs.getInt("price")) + 
 				" | " + String.format("%-12s", Products_status.fromInteger(rs.getInt("status"))) + " |";
-	}
+	}*/
 	
 }

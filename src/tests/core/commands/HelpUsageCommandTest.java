@@ -7,11 +7,10 @@ import javax.naming.directory.InvalidAttributesException;
 import org.junit.Test;
 
 import core.commands.Command;
-import core.commands.ExitApplicationCommand;
+import core.commands.HelpUsageCommand;
 
-public class ExitApplicationCommandTest {
-	
-	class CommandAdapter extends ExitApplicationCommand implements Command {
+public class HelpUsageCommandTest {
+	class CommandAdapter extends HelpUsageCommand implements Command {
 		
 		@Override
 		public boolean isSpecificParamsIsValid() {
@@ -21,7 +20,7 @@ public class ExitApplicationCommandTest {
 		@Override
 		public void checkParams(String paramsList[]) throws Exception {
 			super.checkParams(paramsList);
-		}		
+		}
 	};
 	
 	CommandAdapter command = new CommandAdapter();
@@ -33,11 +32,12 @@ public class ExitApplicationCommandTest {
  
 	@Test
 	public void testExecute() {
-		//command.execute();
+		command.execute();
 	}
 	
 	@Test(expected = InvalidAttributesException.class)
 	public void testCheckParams() throws Exception {
 		command.checkParams(null);
 	}
+
 }
