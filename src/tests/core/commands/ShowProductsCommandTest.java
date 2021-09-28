@@ -6,34 +6,38 @@ import org.junit.Test;
 
 import core.commands.Command;
 import core.commands.ShowProductsCommand;
+import core.persistent.CommandsErrors;
 
 public class ShowProductsCommandTest {
 	class CommandAdapter extends ShowProductsCommand implements Command {
 		
 		@Override
-		public boolean isSpecificParamsIsValid() {
-			return super.isSpecificParamsIsValid();
+		public boolean isSpecificParamsValuesValid() {
+			return super.isSpecificParamsValuesValid();
 		}
 				
 		@Override
-		public void checkParams(String paramsList[]) throws Exception {
-			super.checkParams(paramsList);
+		public boolean isParamsValid(String paramsList[]) {
+			return super.isParamsValid(paramsList);
 		}		
 	};
 	CommandAdapter command = new CommandAdapter();
 
 	@Test
 	public void testIsSpecificParamsValid(){
-		assertTrue(command.isSpecificParamsIsValid());
+		assertTrue(command.isSpecificParamsValuesValid());
 	}
 	
 	@Test
 	public void testExecute() throws Exception {
 		TestProductQueries.createTestProduct();
-		command.execute();
+		assertTrue(command.execute());
 	}
 
 	@Test
-	public void testCheckParams() {}
+	public void testisParamsValid() {
+		assertFalse(command.isParamsValid(null));
+		assertEquals(CommandsErrors.INVALID_PARAMETERS, CommandsErrors.getLastError());
+	}
 	
 }

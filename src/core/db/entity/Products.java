@@ -1,6 +1,5 @@
 package core.db.entity;
 
-import java.sql.ResultSet;
 import java.sql.Timestamp;
 
 import core.util.DateTimeFormatter;

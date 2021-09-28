@@ -6,11 +6,10 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.security.sasl.AuthenticationException;
-
 import core.db.DBConnection;
 import core.db.entity.Products;
 import core.db.entity.Products_status;
+import core.persistent.CommandsErrors;
 
 public class ProductDAO {
 
@@ -88,13 +87,17 @@ public class ProductDAO {
 	}
 
 	public static int removeAllProducts(String password) throws Exception {
-		if (persistent.FinalProperties.REMOVE_ALL_PRODUCTS_PASSWORD.equals(password)) {
+		if (core.persistent.FinalProperties.REMOVE_ALL_PRODUCTS_PASSWORD.equals(password)) {
 			Statement stmt =  DBConnection.getConnection().createStatement();
 			int result = stmt.executeUpdate("DELETE FROM PRODUCTS");
+			System.out.println(result);
 			stmt.close();
 			return result;
-		} else
-			throw new AuthenticationException ("incorrect password for removing all products");
+		} else {
+			CommandsErrors.showCommandsErrorsMessage(CommandsErrors.INCORRECT_PASSWORD);
+			return -1;
+		}
+		
 	}
 	
 }

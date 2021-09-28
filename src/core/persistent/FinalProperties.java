@@ -1,5 +1,5 @@
-package persistent;
+package core.persistent;
 
-public class FinalProperties {
+public final class FinalProperties {
 	public static final String REMOVE_ALL_PRODUCTS_PASSWORD ="asdfghjkl";
 }

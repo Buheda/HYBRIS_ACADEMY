@@ -2,11 +2,7 @@ package tests.core.commands;
 
 import static org.junit.Assert.*;
 
-import java.security.InvalidKeyException;
 import java.util.HashMap;
-
-import javax.management.InvalidAttributeValueException;
-import javax.naming.directory.InvalidAttributesException;
 
 import org.junit.After;
 import org.junit.Before;
@@ -14,19 +10,20 @@ import org.junit.Test;
 
 import core.commands.Command;
 import core.commands.RemoveProductCommand;
+import core.persistent.CommandsErrors;
 
 public class RemoveProductCommandTest {
 	
 	class CommandAdapter extends RemoveProductCommand implements Command {
 		
 		@Override
-		public boolean isSpecificParamsIsValid() {
-			return super.isSpecificParamsIsValid();
+		public boolean isSpecificParamsValuesValid() {
+			return super.isSpecificParamsValuesValid();
 		}
 		
 		@Override
-		public void checkParams(String paramsList[]) throws Exception {
-			super.checkParams(paramsList);
+		public boolean isParamsValid(String paramsList[]) {
+			return super.isParamsValid(paramsList);
 		}		
 	};
 	
@@ -45,10 +42,10 @@ public class RemoveProductCommandTest {
     }
     
 	@Test
-	public void testIsSpecificParamsIsValid() {
+	public void testIsSpecificParamsValuesValid() {
 		cmdParamsList.put("id", "1");
 		command.setParams(cmdParamsList);
-		assertTrue(command.isSpecificParamsIsValid());
+		assertTrue(command.isSpecificParamsValuesValid());
 	}
 
 	@Test
@@ -76,32 +73,35 @@ public class RemoveProductCommandTest {
 	}
 	
 	@Test
-	public void testCheckParams_Valid() throws Exception {
+	public void testisParamsValid_Valid() {
 		cmdParamsList.put("id", "10");
 		command.setParams(cmdParamsList);
 		
-		command.checkParams(paramsList);
+		assertTrue(command.isParamsValid(paramsList));
 	}
 	
-	@Test(expected = InvalidAttributesException.class)
-	public void testCheckParams_NoParams() throws Exception {
+	@Test
+	public void testisParamsValid_NoParams() {
 		command.setParams(null);
 		
-		command.checkParams(paramsList);
+		assertFalse(command.isParamsValid(paramsList));
+		assertEquals(CommandsErrors.INVALID_PARAMETERS, CommandsErrors.getLastError());
 	}
 
-	@Test(expected = InvalidKeyException.class)
-	public void testCheckParams_MIssingId() throws Exception {
+	@Test
+	public void testisParamsValid_InvalidId() {
+		cmdParamsList.put("dsf", "sdf");
 		command.setParams(cmdParamsList);
-
-		command.checkParams(paramsList);
-	}
-	
-	@Test(expected = InvalidAttributeValueException.class)
-	public void testCheckParams_EmptyId() throws Exception {
+		
+		assertFalse(command.isParamsValid(paramsList));
+		assertEquals(CommandsErrors.INVALID_KEY, CommandsErrors.getLastError());
+		
 		cmdParamsList.put("id", "");
 		command.setParams(cmdParamsList);
 		
-		command.checkParams(paramsList);
+		assertFalse(command.isParamsValid(paramsList));
+		assertEquals(CommandsErrors.INVALID_VALUE, CommandsErrors.getLastError());
 	}
+	
+
 }

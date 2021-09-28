@@ -2,25 +2,24 @@ package tests.core.commands;
 
 import static org.junit.Assert.*;
 
-import javax.naming.directory.InvalidAttributesException;
-
 import org.junit.Test;
 
 import core.commands.Command;
 import core.commands.ExitApplicationCommand;
+import core.persistent.CommandsErrors;
 
 public class ExitApplicationCommandTest {
 	
 	class CommandAdapter extends ExitApplicationCommand implements Command {
 		
 		@Override
-		public boolean isSpecificParamsIsValid() {
-			return super.isSpecificParamsIsValid();
+		public boolean isSpecificParamsValuesValid() {
+			return super.isSpecificParamsValuesValid();
 		}
 		
 		@Override
-		public void checkParams(String paramsList[]) throws Exception {
-			super.checkParams(paramsList);
+		public boolean isParamsValid(String paramsList[]) {
+			return super.isParamsValid(paramsList);
 		}		
 	};
 	
@@ -28,7 +27,7 @@ public class ExitApplicationCommandTest {
 
 	@Test
 	public void testIsSpecificParamsValid(){
-		assertTrue(command.isSpecificParamsIsValid());
+		assertTrue(command.isSpecificParamsValuesValid());
 	}
  
 	@Test
@@ -36,8 +35,9 @@ public class ExitApplicationCommandTest {
 		//command.execute();
 	}
 	
-	@Test(expected = InvalidAttributesException.class)
-	public void testCheckParams() throws Exception {
-		command.checkParams(null);
+	@Test
+	public void testisParamsValid(){
+		assertFalse(command.isParamsValid(null));
+		assertEquals(CommandsErrors.INVALID_PARAMETERS, CommandsErrors.getLastError());
 	}
 }

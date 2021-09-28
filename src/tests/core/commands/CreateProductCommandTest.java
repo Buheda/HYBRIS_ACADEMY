@@ -2,11 +2,7 @@ package tests.core.commands;
 
 import static org.junit.Assert.*;
 
-import java.security.InvalidKeyException;
 import java.util.HashMap;
-
-import javax.management.InvalidAttributeValueException;
-import javax.naming.directory.InvalidAttributesException;
 
 import org.junit.After;
 import org.junit.Before;
@@ -14,19 +10,20 @@ import org.junit.Test;
 
 import core.commands.Command;
 import core.commands.CreateProductCommand;
+import core.persistent.CommandsErrors;
 
 public class CreateProductCommandTest {
 
 	class CommandAdapter extends CreateProductCommand implements Command {
 		
 		@Override
-		public boolean isSpecificParamsIsValid() {
-			return super.isSpecificParamsIsValid();
+		public boolean isSpecificParamsValuesValid() {
+			return super.isSpecificParamsValuesValid();
 		}
 				
 		@Override
-		public void checkParams(String paramsList[]) throws Exception {
-			super.checkParams(paramsList);
+		public boolean isParamsValid(String paramsList[]) {
+			return super.isParamsValid(paramsList);
 		}		
 	};
 	
@@ -45,38 +42,38 @@ public class CreateProductCommandTest {
     }
     
 	@Test
-	public void testIsSpecificParamsValid() throws Exception {
+	public void testIsSpecificParamsValid() {
 		command.setParams(cmdParamsList);
 		cmdParamsList.put("price", "10");
 
 		cmdParamsList.put("status", "0");
-		assertTrue(command.isSpecificParamsIsValid());
+		assertTrue(command.isSpecificParamsValuesValid());
 		
 		cmdParamsList.put("price", "0");
-		assertTrue(command.isSpecificParamsIsValid());
+		assertTrue(command.isSpecificParamsValuesValid());
 		
 		cmdParamsList.put("status", "1");
-		assertTrue(command.isSpecificParamsIsValid());
+		assertTrue(command.isSpecificParamsValuesValid());
 		
 		cmdParamsList.put("status", "2");
-		assertTrue(command.isSpecificParamsIsValid());
+		assertTrue(command.isSpecificParamsValuesValid());
 	}
 	
 	@Test
 	public void testisSpecificParamsValid_False() {
 		command.setParams(cmdParamsList);
 		
-		assertFalse(command.isSpecificParamsIsValid());
+		assertFalse(command.isSpecificParamsValuesValid());
 		
 		cmdParamsList.put("price", "fgd");
-		assertFalse(command.isSpecificParamsIsValid());
+		assertFalse(command.isSpecificParamsValuesValid());
 		
 		cmdParamsList.put("price", "10");
 		cmdParamsList.put("status", "3");
-		assertFalse(command.isSpecificParamsIsValid());
+		assertFalse(command.isSpecificParamsValuesValid());
 		
 		cmdParamsList.put("status", "-1");		
-		assertFalse(command.isSpecificParamsIsValid());
+		assertFalse(command.isSpecificParamsValuesValid());
 	}
 	
 	@Test
@@ -88,94 +85,88 @@ public class CreateProductCommandTest {
 		cmdParamsList.put("status", "0");
 		command.setParams(cmdParamsList);
 		
-		command.execute();
+		assertTrue(command.execute());
 		
 		cmdParamsList.put("status", "1");
-		command.execute();
+		assertTrue(command.execute());
+		
 		cmdParamsList.put("status", "2");
-		command.execute();
+		assertTrue(command.execute());
 	}
 
-	@Test(expected = InvalidAttributeValueException.class)
+	@Test
 	public void testExecute_Invalid() throws Exception {
 		cmdParamsList.put("name", "n");
 		cmdParamsList.put("price", "sdf");
 		cmdParamsList.put("status", "0");
 		command.setParams(cmdParamsList);
 		
-		command.execute();
+		assertFalse(command.execute());
+		assertEquals(CommandsErrors.INVALID_VALUE, CommandsErrors.getLastError());
 	}
 	
 	@Test
-	public void testCheckParams_Valid() throws Exception {
+	public void testIsParamsValid() {
 		cmdParamsList.put("name", "n");
 		cmdParamsList.put("price", "10");
 		cmdParamsList.put("status", "0");
 		command.setParams(cmdParamsList);
 		
-		command.checkParams(paramsList);
+		assertTrue(command.isParamsValid(paramsList));
 	}
-	@Test(expected = InvalidAttributesException.class)
-	public void testCheckParams_NoParams() throws Exception {
+	
+	@Test
+	public void testIsParamsValid_NoParams() {
 		command.setParams(null);
-		command.checkParams(paramsList);
+		assertFalse(command.isParamsValid(paramsList));
+		assertEquals(CommandsErrors.INVALID_PARAMETERS, CommandsErrors.getLastError());
 	}
 	
-	@Test(expected = InvalidKeyException.class)
-	public void testCheckParams_MissingName() throws Exception {
+	@Test
+	public void testIsParamsValid_InvalidName() {
 		cmdParamsList.put("price", "10");
 		cmdParamsList.put("status", "1");
 		command.setParams(cmdParamsList);
 
-		command.checkParams(paramsList);
-	}
-	
-	@Test(expected = InvalidAttributeValueException.class)
-	public void testCheckParams_EmptyName() throws Exception {
+		assertFalse(command.isParamsValid(paramsList));
+		assertEquals(CommandsErrors.INVALID_KEY, CommandsErrors.getLastError());
+		
 		cmdParamsList.put("name", "");
-		cmdParamsList.put("price", "10");
-		cmdParamsList.put("status", "1");
 		command.setParams(cmdParamsList);
+		assertFalse(command.isParamsValid(paramsList));
+		assertEquals(CommandsErrors.INVALID_VALUE, CommandsErrors.getLastError());
 
-		command.checkParams(paramsList);
 	}
-	
-	@Test(expected = InvalidKeyException.class)
-	public void testCheckParams_MissingStatus() throws Exception {
+		
+	@Test
+	public void testIsParamsValid_InvalidStatus() {
 		cmdParamsList.put("name", "asd");
 		cmdParamsList.put("price", "10");
 		command.setParams(cmdParamsList);
 
-		command.checkParams(paramsList);
-	}
-	
-	@Test(expected = InvalidAttributeValueException.class)
-	public void testCheckParams_EmptyStatus() throws Exception {
-		cmdParamsList.put("name", "vs");
-		cmdParamsList.put("price", "10");
-		cmdParamsList.put("status", "");
-		command.setParams(cmdParamsList);
+		assertFalse(command.isParamsValid(paramsList));
+		assertEquals(CommandsErrors.INVALID_KEY, CommandsErrors.getLastError());
 
-		command.checkParams(paramsList);
+		cmdParamsList.put("status", "");
+		assertFalse(command.isParamsValid(paramsList));
+		assertEquals(CommandsErrors.INVALID_VALUE, CommandsErrors.getLastError());
 	}
 	
-	@Test(expected = InvalidKeyException.class)
-	public void testCheckParams_MissingPrice() throws Exception {
+	@Test
+	public void testIsParamsValid_InvalidPrice() {
 		cmdParamsList.put("name", "dsf");
 		cmdParamsList.put("status", "1");
 		command.setParams(cmdParamsList);
 
-		command.checkParams(paramsList);
-	}
-	
-	@Test(expected = InvalidAttributeValueException.class)
-	public void testCheckParams_EmptyPrice() throws Exception {
-		cmdParamsList.put("name", "ns");
+		assertFalse(command.isParamsValid(paramsList));
+		assertEquals(CommandsErrors.INVALID_KEY, CommandsErrors.getLastError());
+
 		cmdParamsList.put("price", "");
-		cmdParamsList.put("status", "2");
-		command.setParams(cmdParamsList);
+		assertFalse(command.isParamsValid(paramsList));
+		assertEquals(CommandsErrors.INVALID_VALUE, CommandsErrors.getLastError());
 		
-		command.checkParams(paramsList);
-	}
-	
+		cmdParamsList.put("price", "af");
+		assertFalse(command.isParamsValid(paramsList));
+		assertEquals(CommandsErrors.INVALID_VALUE, CommandsErrors.getLastError());
+	}	
 }

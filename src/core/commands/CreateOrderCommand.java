@@ -3,12 +3,13 @@ package core.commands;
 public class CreateOrderCommand extends BaseCommandImp implements Command {
 
 	@Override
-	public boolean isSpecificParamsIsValid() {
+	public boolean isSpecificParamsValuesValid() {
 		return false;
 	}
 
 	@Override
-	public void execute() throws Exception {
+	public boolean execute() throws Exception {
+		return false;
 	}
 }
 

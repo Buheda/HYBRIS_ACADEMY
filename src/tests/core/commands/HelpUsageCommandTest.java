@@ -2,24 +2,23 @@ package tests.core.commands;
 
 import static org.junit.Assert.*;
 
-import javax.naming.directory.InvalidAttributesException;
-
 import org.junit.Test;
 
 import core.commands.Command;
 import core.commands.HelpUsageCommand;
+import core.persistent.CommandsErrors;
 
 public class HelpUsageCommandTest {
 	class CommandAdapter extends HelpUsageCommand implements Command {
 		
 		@Override
-		public boolean isSpecificParamsIsValid() {
-			return super.isSpecificParamsIsValid();
+		public boolean isSpecificParamsValuesValid() {
+			return super.isSpecificParamsValuesValid();
 		}
 		
 		@Override
-		public void checkParams(String paramsList[]) throws Exception {
-			super.checkParams(paramsList);
+		public boolean isParamsValid(String paramsList[]) {
+			return super.isParamsValid(paramsList);
 		}
 	};
 	
@@ -27,17 +26,17 @@ public class HelpUsageCommandTest {
 
 	@Test
 	public void testIsSpecificParamsValid(){
-		assertTrue(command.isSpecificParamsIsValid());
+		assertTrue(command.isSpecificParamsValuesValid());
 	}
  
 	@Test
 	public void testExecute() {
-		command.execute();
+		assertTrue(command.execute());
 	}
 	
-	@Test(expected = InvalidAttributesException.class)
-	public void testCheckParams() throws Exception {
-		command.checkParams(null);
+	@Test
+	public void testisParamsValid(){
+		assertFalse(command.isParamsValid(null));
+		assertEquals(CommandsErrors.INVALID_PARAMETERS, CommandsErrors.getLastError());
 	}
-
 }

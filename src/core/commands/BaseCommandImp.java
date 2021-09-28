@@ -1,39 +1,43 @@
 package core.commands;
 
-import java.security.InvalidKeyException;
 import java.util.HashMap;
 
-import javax.management.InvalidAttributeValueException;
-import javax.naming.directory.InvalidAttributesException;
-
+import core.persistent.CommandsErrors;
 import core.util.StringUtil;
 
 public abstract class BaseCommandImp implements Command {
 
 	protected HashMap<String, String> params;
 	
-	protected abstract boolean isSpecificParamsIsValid() throws Exception;
+	protected abstract boolean isSpecificParamsValuesValid();
 	
-	protected void checkParams(String paramsList[]) throws Exception  {
-		if (null != paramsList && null != params) {
+	protected boolean isParamsValid(String paramsList[]) {
+		if (null != paramsList && null != params && !params.isEmpty()) {
 			for (String param : paramsList) {
-				if (!params.containsKey(param))
-					throw new InvalidKeyException("Missing parameter '"+param+"'. See help");
-				else if(StringUtil.isEmptyString(params.get(param))) {	
-					throw new InvalidAttributeValueException("Empty or missing value for parameter '"+param+"'. See help");
+				if (!params.containsKey(param)) {
+					CommandsErrors.showCommandsErrorsMessage(CommandsErrors.INVALID_KEY, param);
+					return false;
+				}
+				else if(StringUtil.isEmptyString(params.get(param))) {
+					CommandsErrors.showCommandsErrorsMessage(CommandsErrors.INVALID_VALUE, param);
+					return false;
 				}
 			}
 		}
-		else
-			throw new InvalidAttributesException("Missing parameters. See help");
-		if (!isSpecificParamsIsValid())
-			throw new InvalidAttributeValueException("Incorrect parameter'. See help");
+		else {
+			CommandsErrors.showCommandsErrorsMessage(CommandsErrors.INVALID_PARAMETERS);
+			return false;
+		}
+
+		if (!isSpecificParamsValuesValid()){
+			CommandsErrors.showCommandsErrorsMessage(CommandsErrors.INVALID_VALUE);
+			return false;
+		}
+		return true;
 	}
 	
 	@Override
 	public void setParams(HashMap<String, String> params) {
 		this.params = params;
 	}
-	
-	
 }

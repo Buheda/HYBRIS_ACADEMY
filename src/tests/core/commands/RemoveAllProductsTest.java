@@ -2,12 +2,7 @@ package tests.core.commands;
 
 import static org.junit.Assert.*;
 
-import java.security.InvalidKeyException;
 import java.util.HashMap;
-
-import javax.management.InvalidAttributeValueException;
-import javax.naming.directory.InvalidAttributesException;
-import javax.security.sasl.AuthenticationException;
 
 import org.junit.After;
 import org.junit.Before;
@@ -15,20 +10,21 @@ import org.junit.Test;
 
 import core.commands.Command;
 import core.commands.RemoveAllProductsCommand;
+import core.persistent.CommandsErrors;
 
 public class RemoveAllProductsTest {
 	
 	class CommandAdapter extends RemoveAllProductsCommand implements Command {
 		
 		@Override
-		public boolean isSpecificParamsIsValid() {
-			return super.isSpecificParamsIsValid();
+		public boolean isSpecificParamsValuesValid() {
+			return super.isSpecificParamsValuesValid();
 		}
 		
 		@Override
-		public void checkParams(String paramsList[]) throws Exception {
-			super.checkParams(paramsList);
-		}		
+		public boolean isParamsValid(String paramsList[]) {
+			return super.isParamsValid(paramsList);
+		}	
 	};
 	
 	private static final String paramsList[] = {"password"};
@@ -46,22 +42,14 @@ public class RemoveAllProductsTest {
     }
     
 	@Test
-	public void testIsSpecificParamsIsValid() {
-		assertTrue(command.isSpecificParamsIsValid());
-	}
-
-	@Test(expected = AuthenticationException.class)
-	public void testExecute_incorrectPassword() throws Exception {
-		TestProductQueries.createTestProduct();
-		cmdParamsList.put("password", "fa");
-		command.setParams(cmdParamsList);
-		command.execute();
+	public void testIsSpecificParamsValuesValid() {
+		assertTrue(command.isSpecificParamsValuesValid());
 	}
 
 	@Test
 	public void testExecute_Valid() throws Exception {
 		TestProductQueries.createTestProduct();
-		cmdParamsList.put("password", persistent.FinalProperties.REMOVE_ALL_PRODUCTS_PASSWORD);
+		cmdParamsList.put("password", core.persistent.FinalProperties.REMOVE_ALL_PRODUCTS_PASSWORD);
 		command.setParams(cmdParamsList);
 		
 		command.execute();
@@ -71,42 +59,58 @@ public class RemoveAllProductsTest {
 	@Test
 	public void testExecute_Valid_noRecordsInDB() throws Exception {
 		TestProductQueries.removeAllProducts();
-		cmdParamsList.put("password", persistent.FinalProperties.REMOVE_ALL_PRODUCTS_PASSWORD);
+		cmdParamsList.put("password", core.persistent.FinalProperties.REMOVE_ALL_PRODUCTS_PASSWORD);
 		command.setParams(cmdParamsList);
 		
-		command.execute();
+		assertTrue(command.execute());
 		assertFalse(TestProductQueries.isProductsExists());
 	}
 	
 	@Test
-	public void testCheckParams_Valid() throws Exception {
+	public void testExecute_InvalidPassword() throws Exception {
+		TestProductQueries.createTestProduct();
 		cmdParamsList.put("password", "fa");
 		command.setParams(cmdParamsList);
 		
-		command.checkParams(paramsList);
+		assertFalse(command.execute());
+		assertEquals(CommandsErrors.INCORRECT_PASSWORD, CommandsErrors.getLastError());
 	}
 	
-	@Test(expected = InvalidAttributesException.class)
-	public void testCheckParams_NoParams() throws Exception {
-		command.setParams(null);
+	@Test
+	public void testIsParamsValid_Valid() {
+		cmdParamsList.put("password", "fa");
+		command.setParams(cmdParamsList);
 		
-		command.checkParams(paramsList);
+		assertTrue(command.isParamsValid(paramsList));
+	}
+	
+	@Test
+	public void testIsParamsValid_NoParams(){
+		command.setParams(null);
+		assertFalse(command.isParamsValid(paramsList));
+		assertEquals(CommandsErrors.INVALID_PARAMETERS, CommandsErrors.getLastError());
 	}
 
-	@Test(expected = InvalidKeyException.class)
-	public void testCheckParams_MissingPassword_no_Params() throws Exception {
+	@Test
+	public void testIsParamsValid_MissingPassword_no_Params() {
 		command.setParams(cmdParamsList);
 
-		command.checkParams(paramsList);
+		assertFalse(command.isParamsValid(paramsList));
+		assertEquals(CommandsErrors.INVALID_PARAMETERS, CommandsErrors.getLastError());
 	}
 	
-	@Test(expected = InvalidAttributeValueException.class)
-	public void testCheckParams_EmptyPassword() throws Exception {
+	@Test
+	public void testIsParamsValid_InvalidPassword() {
+		cmdParamsList.put("dsf", "sdf");
+		command.setParams(cmdParamsList);
+		
+		assertFalse(command.isParamsValid(paramsList));
+		assertEquals(CommandsErrors.INVALID_KEY, CommandsErrors.getLastError());
+		
 		cmdParamsList.put("password", "");
 		command.setParams(cmdParamsList);
 		
-		command.checkParams(paramsList);
+		assertFalse(command.isParamsValid(paramsList));
+		assertEquals(CommandsErrors.INVALID_VALUE, CommandsErrors.getLastError());
 	}
-	
-
 }

@@ -3,7 +3,7 @@ package core.commands;
 public class HelpUsageCommand  extends BaseCommandImp implements Command {
 
 	@Override
-	protected boolean isSpecificParamsIsValid() {
+	protected boolean isSpecificParamsValuesValid() {
 		return true;
 	}
 
@@ -31,8 +31,9 @@ public class HelpUsageCommand  extends BaseCommandImp implements Command {
 	}
 	
 	@Override
-	public void execute() {
-		ShowUsageInfo();	
+	public boolean execute() {
+		ShowUsageInfo();
+		return true;	
 	}
 
 }

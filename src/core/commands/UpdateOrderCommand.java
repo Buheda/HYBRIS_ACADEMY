@@ -3,13 +3,13 @@ package core.commands;
 public class UpdateOrderCommand extends BaseCommandImp implements Command {
 
 	@Override
-	protected boolean isSpecificParamsIsValid() {
+	protected boolean isSpecificParamsValuesValid() {
 		return false;
 	}
 	
 	@Override
-	public void execute() {
-		// TODO Auto-generated method stub
+	public boolean execute() {
+		return false;
 	}
 
 }

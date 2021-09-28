@@ -1,44 +1,45 @@
 package tests.core.commands;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-
-import javax.naming.directory.InvalidAttributesException;
 
 import org.junit.Test;
 
 import core.commands.Command;
 import core.commands.UnknownCommand;
+import core.persistent.CommandsErrors;
 
 public class UnknownCommandTest {
 	
 	class CommandAdapter extends UnknownCommand implements Command {
 		
 		@Override
-		public boolean isSpecificParamsIsValid() {
-			return super.isSpecificParamsIsValid();
+		public boolean isSpecificParamsValuesValid() {
+			return super.isSpecificParamsValuesValid();
 		}
 		
 		@Override
-		public void checkParams(String paramsList[]) throws Exception {
-			super.checkParams(paramsList);
-		}		
+		public boolean isParamsValid(String paramsList[]) {
+			return super.isParamsValid(paramsList);
+		}	
 	};
 	
 	CommandAdapter command = new CommandAdapter();
 
 	@Test
-	public void testIsSpecificParamsIsValid() {
-		assertTrue(command.isSpecificParamsIsValid());
+	public void testIsSpecificParamsValuesValid() {
+		assertTrue(command.isSpecificParamsValuesValid());
 	}
 
 	@Test
 	public void testExecute() throws Exception {
-		command.execute();
+		assertTrue(command.execute());
 	}
 
-	@Test(expected = InvalidAttributesException.class)
-	public void testCheckParams() throws Exception {
-		command.checkParams(null);
+	@Test
+	public void testisParamsValid(){
+		assertFalse(command.isParamsValid(null));
+		assertEquals(CommandsErrors.INVALID_PARAMETERS, CommandsErrors.getLastError());
 	}
-
 }
