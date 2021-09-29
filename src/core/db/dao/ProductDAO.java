@@ -20,10 +20,8 @@ public class ProductDAO {
 		preparedStatement.setInt(2, product.getPrice());
 		preparedStatement.setInt(3, product.getStatus().ordinal());
 		preparedStatement.setTimestamp(4, product.getCreated_at());
-		int result = preparedStatement.executeUpdate(); 
-		preparedStatement.close();
-		return result;
-		/*ResultSet rs = preparedStatement.getGeneratedKeys();
+		preparedStatement.executeUpdate(); 
+		ResultSet rs = preparedStatement.getGeneratedKeys();
 
 		int result = -1;
 		if (rs.next()) {
@@ -31,7 +29,7 @@ public class ProductDAO {
 		}
 		
 		preparedStatement.close();
-		return result;*/
+		return result;
 	}
 	
 	public static int getAllProducts_MaxLength() throws Exception  {

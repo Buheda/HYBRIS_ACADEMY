@@ -31,7 +31,7 @@ public class CreateProductCommand extends BaseCommand_ArgumentsMap implements Co
 	
 	@Override
 	public boolean executeCommand() throws Exception {
-
+		boolean isQueryOK = false;
 		int statusInt = Integer.parseInt(params.get("--status"));
 		Products_status status = Products_status.in_stock; 
 		switch (statusInt) {
@@ -53,9 +53,13 @@ public class CreateProductCommand extends BaseCommand_ArgumentsMap implements Co
 			DateTimeFormatter.getNow());
 		
 		int rowsCount = ProductDAO.createProduct(newProduct);
-
-		System.out.printf("%d rows were successfully added\n", rowsCount);
-		return true;
+		if (-1 != rowsCount) {
+			isQueryOK = true;
+			System.out.println("Product was successfully added with id="+rowsCount);
+		} else  {
+			System.out.println("Product wasn't added");
+		}
+		return isQueryOK;
 	}
 
 

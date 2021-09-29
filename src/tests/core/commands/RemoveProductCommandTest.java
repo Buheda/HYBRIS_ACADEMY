@@ -44,7 +44,7 @@ public class RemoveProductCommandTest {
 	@Test
 	public void testExecute_StringId() throws Exception {
 		System.out.println("RemoveProductCommandTest.testExecute_StringId()");
-		assertTrue(command.execute("sdfa"));	
+		assertFalse(command.execute("sdfa"));	
 	}
 	
 	@Test
