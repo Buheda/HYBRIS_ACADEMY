@@ -22,16 +22,17 @@ public class CreateOrderCommand extends BaseCommand_ArgumentsList implements Com
 	}
 
 	@Override
-	protected boolean executeCommand() {
+	protected boolean executeCommand() throws Exception {
 		boolean isQueryOK = false;
 		ArrayList<Integer> items = new ArrayList<>(); 
 		items.addAll(params.stream().map(Integer::valueOf).collect(Collectors.toList()));
-		int rowsCount = OrderDAO.createOrder(items);
-		if (-1 != rowsCount) {
+		System.out.println(items);
+		int id = OrderDAO.createOrder(items);
+		if (-1 != id) {
 			isQueryOK = true;
-			System.out.println("Order was successfully added with id="+rowsCount);
+			System.out.println("Order was successfully added with id="+id);
 		} else  {
-			System.out.println("Product wasn't added");
+			System.out.println("Order wasn't added");
 		}
 		return isQueryOK;
 	}

@@ -54,6 +54,15 @@ public class ProductDAO {
 		return result;
 	}
 	
+	public static boolean isProductsExistsById(int id) throws Exception {
+		Statement stmt =  DBConnection.getConnection().createStatement();
+		ResultSet rs = stmt.executeQuery("SELECT * FROM PRODUCTS where id="+id);
+		boolean result = rs.next();
+		rs.close();
+		stmt.close();
+		return result;
+	}
+	
 	public static List<Products> getProductsList() throws Exception{
 		Statement stmt =  DBConnection.getConnection().createStatement();
 		ResultSet rs = stmt.executeQuery("SELECT * FROM PRODUCTS");

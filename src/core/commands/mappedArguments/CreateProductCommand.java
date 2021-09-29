@@ -52,10 +52,10 @@ public class CreateProductCommand extends BaseCommand_ArgumentsMap implements Co
 			status,
 			DateTimeFormatter.getNow());
 		
-		int rowsCount = ProductDAO.createProduct(newProduct);
-		if (-1 != rowsCount) {
+		int id = ProductDAO.createProduct(newProduct);
+		if (-1 != id) {
 			isQueryOK = true;
-			System.out.println("Product was successfully added with id="+rowsCount);
+			System.out.println("Product was successfully added with id="+id);
 		} else  {
 			System.out.println("Product wasn't added");
 		}

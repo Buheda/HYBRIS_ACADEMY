@@ -14,6 +14,9 @@ public class ShowProductsCommand implements Command {
 		int nameFieldLength = ProductDAO.getAllProducts_MaxLength();
 		List<Products> productsList = ProductDAO.getProductsList();
 		isQueryOK = true;
+		if (productsList.isEmpty()) {
+			System.out.println("Product table is empty");
+		}
 		for (Products product : productsList) {
 			System.out.println(product.toString(nameFieldLength));
 		}

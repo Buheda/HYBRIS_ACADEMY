@@ -20,18 +20,23 @@ public abstract class BaseCommand_ArgumentsMap implements Command {
 	protected abstract boolean isParamsValuesValid();
 	protected abstract boolean executeCommand() throws Exception;
 		
+	protected static ArrayList<String> strToList(String str){
+		 //regex for parsing (--param arg) or (--param)
+		String regex = "(--\\S+\\s+[^(--|\\s+)]+)|(--\\S+[^\\s]+)";
+		Pattern pattern = Pattern.compile(regex);
+		Matcher m  = pattern.matcher(str);
+		ArrayList<String> argsArr = new ArrayList<String>();
+		while(m.find()) {
+			argsArr.add(m.group());
+		}	
+		return argsArr;
+	}
+	
 	@Override
 	final public boolean execute(String argsString) throws Exception {
 		if (!StringUtil.isEmptyString(argsString)) {
-			 //regex for parsing (--param arg) or (--param)
-			 String regex = "(--\\S+\\s+[^(--|\\s+)]+)|(--\\S+[^\\s]+)";
-			 Pattern pattern = Pattern.compile(regex);
-			 Matcher m  = pattern.matcher(argsString);
-			 List<String> argsArr = new ArrayList<String>();
-			 while(m.find()) {
-				 argsArr.add(m.group());
-			 }
-			 if (!argsArr.isEmpty()) {
+			ArrayList<String> argsArr = strToList(argsString);
+			if (!argsArr.isEmpty()) {
 				params = new HashMap<>();
 				Set<String> paramsSet = getCommandParamsSet();
 				for (int i=0;i<argsArr.size();i++) {

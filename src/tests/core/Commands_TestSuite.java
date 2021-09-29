@@ -8,7 +8,8 @@ import tests.core.commands.*;
 
 @RunWith(Suite.class)
 @SuiteClasses({
-	CreateProductCommandTest.class, 
+	CreateProductCommandTest.class,
+	CreateOrderCommandTest.class,
 	///ShowProductsCommandTest.class, 
 	RemoveAllProductsTest.class, 
 	RemoveProductCommandTest.class

@@ -64,7 +64,7 @@ public class DB_HSQLDB implements DB {
 				+ ")");
 		
 		try {
-			stmt.executeUpdate("ALTER TABLE "+curTableName+" ADD CONSTRAINT unique_order_id UNIQUE(order_id)");	
+			stmt.executeUpdate("ALTER TABLE "+curTableName+" ADD CONSTRAINT unique_order_item UNIQUE(order_id, product_id)");	
 		} catch  (Exception e) {
 			//System.err.println(e);
 		}

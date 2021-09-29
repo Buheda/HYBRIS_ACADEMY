@@ -16,7 +16,6 @@ public class RemoveProductCommandTest {
 	
 	@Test
 	public void testExecute_Valid() throws Exception {
-		System.out.println("RemoveProductCommandTest.testExecute_Valid()");
 		TestProductQueries.removeAllProducts();
 		Integer id = TestProductQueries.createTestProduct();
 		assertTrue(TestProductQueries.isProductsExistsById(id));
@@ -35,7 +34,6 @@ public class RemoveProductCommandTest {
 
 	@Test
 	public void testExecute_InvalidId() throws Exception {
-		System.out.println("RemoveProductCommandTest.testExecute_InvalidId()");
 		Integer id = TestProductQueries.createTestProduct();
 		assertFalse(TestProductQueries.isProductsExistsById(++id));
 		assertTrue(command.execute(id.toString()));	
@@ -43,13 +41,11 @@ public class RemoveProductCommandTest {
 	
 	@Test
 	public void testExecute_StringId() throws Exception {
-		System.out.println("RemoveProductCommandTest.testExecute_StringId()");
 		assertFalse(command.execute("sdfa"));	
 	}
 	
 	@Test
 	public void testExecute_NoParams() throws Exception {
-		System.out.println("RemoveProductCommandTest.testExecute_NoParams()");
 		assertFalse(command.execute(""));
 		assertEquals(CommandsErrors.INVALID_LIST, CommandsErrors.getLastError());
 	}

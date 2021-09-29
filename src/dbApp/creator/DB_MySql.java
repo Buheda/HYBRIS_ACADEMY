@@ -62,7 +62,7 @@ public class DB_MySql implements DB {
 				+ "  `order_id` int NOT NULL,"
 				+ "  `product_id` int NOT NULL,"
 				+ "  `quantity` int NOT NULL,"
-				+ "  UNIQUE KEY `order_id` (`order_id`)"
+				+ "  UNIQUE KEY `unique_order_item` (`order_id`, `product_id`)"
 				+ ")");  
 	    DatabaseMetaData databaseMetaData = DBConnection.getConnection().getMetaData();
 		ResultSet rs = databaseMetaData.getTables(null, null, curTableName, new String[] {"TABLE"});
