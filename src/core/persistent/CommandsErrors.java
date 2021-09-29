@@ -5,6 +5,7 @@ public enum CommandsErrors {
 	INVALID_PARAMETERS,
 	INVALID_KEY,
 	INVALID_VALUE,
+	INVALID_LIST,
 	INCORRECT_PASSWORD;
 
 	private static CommandsErrors currentError = null;
@@ -24,6 +25,9 @@ public enum CommandsErrors {
 			case INVALID_VALUE:
 				System.err.println("ERROR: Incorrect parameter value. See help");
 				break;
+			case INVALID_LIST:
+				System.err.println("ERROR: Incorrect list of values");
+				break;
 			case INCORRECT_PASSWORD:
 				System.err.println("ERROR: Incorrect password for removing all products");
 				break;
@@ -35,20 +39,15 @@ public enum CommandsErrors {
 	public static void showCommandsErrorsMessage(CommandsErrors error, String paramName) {
 		currentError = error; 
 		switch (error) {
-			case INVALID_PARAMETERS:
-				showCommandsErrorsMessage(error);
-				break;
 			case INVALID_KEY:
 				System.err.println("ERROR: Missing parameter '"+paramName+"'. See help");
 				break;
 			case INVALID_VALUE:
 				System.err.println("ERROR: Empty or missing value for parameter '"+paramName+"'. See help");
 				break;
-			case INCORRECT_PASSWORD:
-				showCommandsErrorsMessage(error);
 			default:
-				break;
-		}
+				showCommandsErrorsMessage(error);
+			}
 	}
 
 }

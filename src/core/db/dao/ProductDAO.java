@@ -90,7 +90,6 @@ public class ProductDAO {
 		if (core.persistent.FinalProperties.REMOVE_ALL_PRODUCTS_PASSWORD.equals(password)) {
 			Statement stmt =  DBConnection.getConnection().createStatement();
 			int result = stmt.executeUpdate("DELETE FROM PRODUCTS");
-			System.out.println(result);
 			stmt.close();
 			return result;
 		} else {

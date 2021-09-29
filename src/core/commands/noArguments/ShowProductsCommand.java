@@ -1,19 +1,15 @@
-package core.commands;
+package core.commands.noArguments;
 
 import java.util.List;
 
+import core.commands.Command;
 import core.db.dao.ProductDAO;
 import core.db.entity.Products;
 
-public class ShowProductsCommand extends BaseCommandImp implements Command {
-
-	@Override
-	protected boolean isSpecificParamsValuesValid() {
-		return true;
-	}
+public class ShowProductsCommand implements Command {
 	
 	@Override
-	public boolean execute() throws Exception {
+	public boolean execute(String argsString) throws Exception {
 		boolean isQueryOK = false;
 		int nameFieldLength = ProductDAO.getAllProducts_MaxLength();
 		List<Products> productsList = ProductDAO.getProductsList();
@@ -23,6 +19,5 @@ public class ShowProductsCommand extends BaseCommandImp implements Command {
 		}
 		return isQueryOK;
 	}
-
 }
 
