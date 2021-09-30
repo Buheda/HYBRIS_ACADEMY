@@ -1,4 +1,4 @@
-package dbApp.creator;
+package dbApp.tablesManager;
 
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
@@ -79,7 +79,7 @@ public class DB_MySql implements DB {
 		return isTableExist;
 	};
 	
-	private boolean CreateTable_Products(String curTableName) throws SQLException, Exception {
+	private boolean CreateTable_Products(String curTableName) throws Exception {
 		boolean isTableExist = false;
 		curTableName = "PRODUCTS";
 		
@@ -105,6 +105,47 @@ public class DB_MySql implements DB {
 		rs.close();
 		stmt.close();
 		return isTableExist;
+	}
+
+	@Override
+	public boolean dropTables() throws Exception {
+		String curTable = "Tables";
+		try {
+			return DropTable_OrderItems(curTable) &&
+					DropTable_Order(curTable) &&
+					DropTable_Products(curTable);
+		}
+		catch (Exception e) {
+	    	System.err.println(curTable + " couldn't be dropped because: ");
+			System.err.println(e);
+			throw e;
+		}
 	};
 
+	private boolean DropTable_Order(String curTableName) throws Exception {
+		curTableName = "ORDERS";
+		
+		Statement stmt =  DBConnection.getConnection().createStatement();
+		stmt.executeUpdate("DROP TABLE `"+curTableName+"`)");  
+		stmt.close();
+		return true;
+	}
+	
+	private boolean DropTable_OrderItems(String curTableName) throws Exception {
+		curTableName = "ORDER_ITEMS";
+		
+		Statement stmt =  DBConnection.getConnection().createStatement();
+		stmt.executeUpdate("DROP TABLE `"+curTableName+"`)");  
+		stmt.close();
+		return true;
+	};
+	
+	private boolean DropTable_Products(String curTableName) throws SQLException, Exception {
+		curTableName = "PRODUCTS";
+		
+		Statement stmt =  DBConnection.getConnection().createStatement();
+		stmt.executeUpdate("DROP TABLE `"+curTableName+"`)");  
+		stmt.close();
+		return true;
+	}
 }

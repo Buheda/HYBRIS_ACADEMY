@@ -1,22 +1,22 @@
-package dbApp.creator;
+package dbApp.tablesManager;
 
 import core.db.DBConnection;
 import core.db.DBType;
 
 public class Factory {	
-	static DB dbCreator = null;
+	static DB dbManager = null;
 	
-	public static DB getDBCreator() throws Exception {
-		if (null != dbCreator) 
-			return dbCreator;
+	public static DB getDBManager() throws Exception {
+		if (null != dbManager) 
+			return dbManager;
 				
 		if (DBType.HSQLDB.equals(DBConnection.getDBType()))
-			dbCreator = new DB_HSQLDB();
+			dbManager = new DB_HSQLDB();
 		else if(DBType.MySQL.equals(DBConnection.getDBType()))
-			dbCreator = new DB_MySql();
+			dbManager = new DB_MySql();
 		else 
 			throw new IllegalArgumentException("Incorrect database type");	    
 
-		return dbCreator;
+		return dbManager;
 	};
 }
