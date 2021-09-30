@@ -6,6 +6,7 @@ import core.commands.listedArguments.CreateOrderCommand;
 import core.commands.mappedArguments.CreateProductCommand;
 import core.commands.noArguments.ShowAllProductsCommand;
 import core.db.DBConnection;
+import core.db.entity.Products;
 import dbApp.tablesManager.Factory;
 import java.io.PrintStream;
 import java.io.IOException;
@@ -13,7 +14,7 @@ import java.io.OutputStream;
 
 
 public class Generator {
-	
+	private static Scanner scanner;
 	private final static int COUNT_RECORD = 50;
 	private final static PrintStream oldOut = System.out;
 	private final static PrintStream oldErr = System.err;
@@ -34,28 +35,27 @@ public class Generator {
 		System.setErr(oldErr);
 	}
 	
-	private static void dropTables() throws Exception {
-		System.out.println("Do you need to drop old tables? y/n");
-		Scanner scanner = new Scanner(System.in);
+	private static boolean askYN(String question) {
+		System.out.println(question+" y/n");
 		String commandLine = scanner.nextLine();
 		while (!commandLine.equals("y") && !commandLine.equals("n")) {
 			System.out.println("Incorrect answer");
 			System.out.println("Do you need to drop old tables? y/n");
 			commandLine = scanner.nextLine();
-
 		}
-		
-		if (commandLine.equals("y")) {
-			System.out.println("removing tables...");
-			Factory.getDBManager().dropTables();
-		}
-		
-		scanner.close();
+		return commandLine.equals("y");
+	}
+	
+	private static void dropTables() throws Exception {		
+		System.out.println("removing tables...");
+		Factory.getDBManager().dropTables();
+		System.out.println("Done!");
 	}
 	
 	private static void createTables() throws Exception {
 		System.out.println("Creating tables..."); 
 		Factory.getDBManager().createTables();
+		System.out.println("Done!");
 	}
 	
 	private static void generateProducts() throws Exception {
@@ -69,9 +69,10 @@ public class Generator {
 			
 			int status = (int)(Math.random() * countPossibleStatuses);
 			int price = minPrice + (int)(Math.random() * (maxPrice-minPrice));
-			command.execute("--name Product"+i+" --status "+status+" --price "+price);
+			command.execute("--name Product"+i+" --status "+Products.getStatusTypes().get(status)+" --price "+price);
 		}
 		switchOnConsole();
+		System.out.println("Done!");
 	}
 	
 	private static void generateOrders() throws Exception {
@@ -91,6 +92,7 @@ public class Generator {
 			command.execute(params.toString());
 		}
 		switchOnConsole();
+		System.out.println("Done!");
 	}
 	
 	private static void showAllProducts() throws Exception {
@@ -99,13 +101,21 @@ public class Generator {
 	}
 	
 	public static void main(String[] args) throws Exception {
+		boolean isDeleted = false;
+		boolean isCreated = false;
+		scanner = new Scanner(System.in);
+		if (askYN("Do you need to drop old tables?"))
+			dropTables();
+		if (askYN("Do you need to create new tables?"))
+			createTables();
+		if (askYN("Do you need to generate example data?")) {
+			generateProducts();
+			generateOrders();
+			showAllProducts();
+		}
 		
-		dropTables();
-		createTables();
-		generateProducts();
-		generateOrders();
-		showAllProducts();
 		DBConnection.getConnection().close();
+		scanner.close();
 	}
 
 }

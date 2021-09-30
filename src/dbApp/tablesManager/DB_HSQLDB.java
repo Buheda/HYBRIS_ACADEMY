@@ -17,8 +17,7 @@ public class DB_HSQLDB implements DB {
 		try {
 			return CreateTable_Order(curTable) &&
 					CreateTable_OrderItems(curTable) &&
-					CreateTable_Products(curTable) &&
-					CreateTable_ProductsStatus(curTable);
+					CreateTable_Products(curTable);
 		}
 		catch (Exception e) {
 			System.err.println(curTable + " couldn't be created because: ");
@@ -94,11 +93,10 @@ public class DB_HSQLDB implements DB {
 				+ "  id int NOT NULL IDENTITY,"
 				+ "  name varchar(255) NOT NULL,"
 				+ "  price int NOT NULL,"
-				+ "  status int NOT NULL,"
+				+ "  status varchar(255) check (status in ('out_of_stock', 'in_stock', 'running_low')),"
 				+ "  created_at datetime NOT NULL,"
 				+ "  PRIMARY KEY (id)"
 				+ ")");
-		
 		DatabaseMetaData databaseMetaData = DBConnection.getConnection().getMetaData();
 		ResultSet rs = databaseMetaData.getTables(null, null, curTableName.toString(), new String[] {"TABLE"});
 		
@@ -163,7 +161,7 @@ public class DB_HSQLDB implements DB {
 		curTableName = "ORDERS";
 		
 		Statement stmt =  DBConnection.getConnection().createStatement();
-		stmt.executeUpdate("DROP TABLE "+curTableName);  
+		stmt.executeUpdate("DROP TABLE If EXISTS "+curTableName);  
 		stmt.close();
 		return true;
 	}
@@ -172,7 +170,7 @@ public class DB_HSQLDB implements DB {
 		curTableName = "ORDER_ITEMS";
 		
 		Statement stmt =  DBConnection.getConnection().createStatement();
-		stmt.executeUpdate("DROP TABLE "+curTableName);  
+		stmt.executeUpdate("DROP TABLE If EXISTS "+curTableName);  
 		stmt.close();
 		return true;
 	};
@@ -181,7 +179,7 @@ public class DB_HSQLDB implements DB {
 		curTableName = "PRODUCTS";
 		
 		Statement stmt =  DBConnection.getConnection().createStatement();
-		stmt.executeUpdate("DROP TABLE "+curTableName);  
+		stmt.executeUpdate("DROP TABLE If EXISTS "+curTableName);  
 		stmt.close();
 		return true;
 	}

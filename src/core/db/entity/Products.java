@@ -1,10 +1,14 @@
 package core.db.entity;
 
 import java.sql.Timestamp;
-
-import core.util.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class Products {
+	
+	private static final List<String> PRODUCT_STATUS_TYPES = 
+			new ArrayList<String>(Arrays.asList("out_of_stock","in_stock","running_low"));
 
 	private int id;
 
@@ -12,11 +16,11 @@ public class Products {
 
 	private int price;
 
-	private Products_status status;
+	private String status;
 
 	private Timestamp created_at;
 
-	public Products(String name, int price, Products_status status, Timestamp created_at) {
+	public Products(String name, int price, String status, Timestamp created_at) {
 		this.id = 0;
 		this.name = name;
 		this.price = price;
@@ -24,16 +28,12 @@ public class Products {
 		this.created_at = created_at;
 	}
 	
-	public Products(int id, String name, int price, Products_status status, Timestamp created_at) {
+	public Products(int id, String name, int price, String status, Timestamp created_at) {
 		this.id = id;
 		this.name = name;
 		this.price = price;
 		this.status = status;
 		this.created_at = created_at;
-	}
-
-	public Products() {
-		this(0, "", 0, Products_status.out_of_stock, DateTimeFormatter.getNow());
 	}
 
 	public int getId() {
@@ -60,11 +60,11 @@ public class Products {
 		this.price = price;
 	}
 
-	public Products_status getStatus() {
+	public String getStatus() {
 		return status;
 	}
 
-	public void setStatus(Products_status status) {
+	public void setStatus(String status) {
 		this.status = status;
 	}
 
@@ -75,9 +75,15 @@ public class Products {
 	public void setCreated_at(Timestamp created_at) {
 		this.created_at = created_at;
 	}
-
+	
+	public static List<String> getStatusTypes() {
+		return PRODUCT_STATUS_TYPES;
+	}	
+	
 	@Override
 	public String toString() {
 		return "| "+id+" | " + name + " | " + price + " | " + status + " |";
-	}	
+	}
+
+
 }

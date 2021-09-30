@@ -21,7 +21,7 @@ public class HelpUsageCommand implements Command {
 		System.out.println("create_product --name <arg1> --price <arg2> --status <arg3>");
 		System.out.println("	<arg1>  product name");
 		System.out.println("	<arg2>  product price, integer");
-		System.out.println("	<arg3>  0,1,2 (0 - out of stock, 1 - in stock, 2 - running low)");	
+		System.out.println("	<arg3>  out of stock, in stock, running low)");	
 		System.out.println("create_order <arg1> <arg2> <arg3> <argN>");
 		System.out.println("	<argN>  ids of products, integer");
 		System.out.println("update_order --orderid <arg1> --productid <arg2> --quantity <arg3>");

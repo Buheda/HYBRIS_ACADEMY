@@ -21,7 +21,7 @@ public class TestProductQueries {
 		PreparedStatement preparedStatement = DBConnection.getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 		preparedStatement.setString(1, "testName");
 		preparedStatement.setInt(2, 10);
-		preparedStatement.setInt(3, 1);
+		preparedStatement.setString(3, "in_stock");
 		preparedStatement.setTimestamp(4, DateTimeFormatter.getNow());
 		preparedStatement.executeUpdate();
 		

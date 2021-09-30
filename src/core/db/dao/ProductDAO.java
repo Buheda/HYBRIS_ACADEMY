@@ -9,17 +9,16 @@ import java.util.List;
 
 import core.db.DBConnection;
 import core.db.entity.Products;
-import core.db.entity.Products_status;
 
 public class ProductDAO {
 
-	public static int createProduct(String name, int price, Products_status status, Timestamp created_at) throws Exception {
+	public static int createProduct(String name, int price, String status, Timestamp created_at) throws Exception {
 		String sql = "INSERT INTO PRODUCTS (name, price, status, created_at) Values (?, ?, ?, ?)";
 		PreparedStatement preparedStatement = DBConnection.getConnection().prepareStatement(sql, 
 				Statement.RETURN_GENERATED_KEYS);
 		preparedStatement.setString(1, name);
 		preparedStatement.setInt(2, price);
-		preparedStatement.setInt(3, status.ordinal());
+		preparedStatement.setString(3, status);
 		preparedStatement.setTimestamp(4, created_at);
 		preparedStatement.executeUpdate(); 
 		ResultSet rs = preparedStatement.getGeneratedKeys();
@@ -67,15 +66,14 @@ public class ProductDAO {
 	
 	public static List<Products> getProductsList() throws Exception{
 		Statement stmt =  DBConnection.getConnection().createStatement();
-		ResultSet rs = stmt.executeQuery("SELECT * FROM PRODUCTS inner join product_status on status=is");
+		ResultSet rs = stmt.executeQuery("SELECT * FROM PRODUCTS");
 		List<Products> productList = new ArrayList<Products>();
 		while(rs.next()) {
-			Products product = new Products();      
-			product.setId(rs.getInt("id"));
-			product.setName(rs.getString("name"));
-			product.setPrice(rs.getInt("price"));
-			product.setStatus(Products_status.fromInteger(rs.getInt("status")));
-			product.setCreated_at(rs.getTimestamp("created_at"));
+			Products product = new Products(rs.getInt("id"),
+											rs.getString("name"),
+											rs.getInt("price"),
+											rs.getString("status"),
+											rs.getTimestamp("created_at"));
 			productList.add(product);
 		}
 		
