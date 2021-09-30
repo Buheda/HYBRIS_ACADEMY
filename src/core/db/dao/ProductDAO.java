@@ -32,16 +32,18 @@ public class ProductDAO {
 	}
 	
 	
-	public static int getAllProducts_MaxLength() throws Exception  {
-		Statement stmt =  DBConnection.getConnection().createStatement();
-		ResultSet rs = stmt.executeQuery("SELECT MAX(LENGTH(name)) as length FROM PRODUCTS");
+	public static int getAllProducts_MaxLength() {
 		int result = 0;
-		if (rs.next()) {
+		try {
+			Statement stmt =  DBConnection.getConnection().createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT MAX(LENGTH(name)) as length FROM PRODUCTS");
+			rs.next();
 			result = rs.getInt("length");
-		}
 		
-		rs.close();
-		stmt.close();
+			rs.close();
+			stmt.close();
+		} catch (Exception e) {
+		}
 		return result;
 	}
 	
@@ -65,7 +67,7 @@ public class ProductDAO {
 	
 	public static List<Products> getProductsList() throws Exception{
 		Statement stmt =  DBConnection.getConnection().createStatement();
-		ResultSet rs = stmt.executeQuery("SELECT * FROM PRODUCTS");
+		ResultSet rs = stmt.executeQuery("SELECT * FROM PRODUCTS inner join product_status on status=is");
 		List<Products> productList = new ArrayList<Products>();
 		while(rs.next()) {
 			Products product = new Products();      
@@ -83,7 +85,7 @@ public class ProductDAO {
 	}
 	
 	public static void getAllOrderedProductsList() {
-
+		/*SELECT ID, PRICE, STATUS, sum(quantity) as quantity FROM PRODUCTS INNER JOIN ORDER_ITEMS on PRODUCTS.id = ORDER_ITEMS.product_id group by id, price, status*/
 	}
 
 	public static void removeProductsById(int id) throws Exception {

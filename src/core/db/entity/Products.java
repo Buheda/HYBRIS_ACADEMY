@@ -79,29 +79,5 @@ public class Products {
 	@Override
 	public String toString() {
 		return "| "+id+" | " + name + " | " + price + " | " + status + " |";
-	}
-	
-	public String toString(int nameFieldLength) throws Exception {
-		String paddedName = name;
-		if (nameFieldLength>0) 
-			paddedName = String.format("%-"+nameFieldLength+"."+ nameFieldLength+"s", paddedName);
-		
-		return "| "+String.format("%-3.3s", id)+
-				" | " + paddedName + 
-				" | " + String.format("%-3.3s", price) + 
-				" | " + String.format("%-12s", status) + " |";
-	}
-	
-	//not good
-	/*public static String showResultSet(ResultSet rs, int nameFieldLength) throws Exception {
-		String paddedName = rs.getString("name");
-		if (nameFieldLength>0) 
-			paddedName = String.format("%-"+nameFieldLength+"."+ nameFieldLength+"s", paddedName);
-		
-		return "| "+String.format("%-3.3s", rs.getInt("id"))+
-				" | " + paddedName + 
-				" | " + String.format("%-3.3s", rs.getInt("price")) + 
-				" | " + String.format("%-12s", Products_status.fromInteger(rs.getInt("status"))) + " |";
-	}*/
-	
+	}	
 }

@@ -36,7 +36,6 @@ public class CreateOrderCommandTest {
 		cmdParamd.append(" "+id.toString());
 		
 		assertTrue(command.execute(cmdParamd.toString()));
-
 	}
 
 	@Test

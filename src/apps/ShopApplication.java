@@ -11,7 +11,7 @@ import core.commands.mappedArguments.UpdateOrderCommand;
 import core.commands.noArguments.ExitApplicationCommand;
 import core.commands.noArguments.HelpUsageCommand;
 import core.commands.noArguments.ShowAllOrdersCommand;
-import core.commands.noArguments.ShowProductsCommand;
+import core.commands.noArguments.ShowAllProductsCommand;
 import core.commands.noArguments.UnknownCommand;
 
 public class ShopApplication {
@@ -24,7 +24,7 @@ public class ShopApplication {
 		Command command = null;
 		while (true){
 			try {
-				System.out.println("Please input command:");
+				System.out.println("\nPlease input command:");
 				String commandLine = scanner.nextLine();
 				String[] commandsArr = commandLine.split(" ", 2);
 				command = new UnknownCommand();
@@ -45,11 +45,14 @@ public class ShopApplication {
 					case "update_order":
 						command = new UpdateOrderCommand();
 						break;
-					case "show_orders":
-						command = new ShowAllOrdersCommand();
+					case "show_all_products":
+						command = new ShowAllProductsCommand();
 						break;
-					case "show_products":
-						command = new ShowProductsCommand();
+					case "show_ordered_products":
+						command = new ShowAllProductsCommand();
+						break;
+					case "show_all_orders":
+						command = new ShowAllOrdersCommand();
 						break;
 					case "remove_product":
 						command = new RemoveProductCommand();

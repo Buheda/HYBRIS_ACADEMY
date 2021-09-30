@@ -8,7 +8,6 @@ import org.junit.Test;
 
 import core.commands.mappedArguments.CreateProductCommand;
 import core.persistent.CommandsErrors;
-import tests.core.commands.TestProductQueries;
 
 public class CreateProductCommandTest {
 	
@@ -16,12 +15,12 @@ public class CreateProductCommandTest {
 	
 	@Before
 	public void before() throws Exception {
-		TestProductQueries.cleanDB();
+		//TestProductQueries.cleanDB();
 	}
 	
 	@AfterClass
 	public static void AfterClass() throws Exception {
-		TestProductQueries.cleanDB();
+		//TestProductQueries.cleanDB();
 	}
 	
 	@Test

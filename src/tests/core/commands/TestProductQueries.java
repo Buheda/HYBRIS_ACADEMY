@@ -3,13 +3,9 @@ package tests.core.commands;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
 
 import core.db.DBConnection;
 import core.db.entity.Order_items;
-import core.db.entity.Products;
-import core.db.entity.Products_status;
 import core.util.DateTimeFormatter;
 
 public class TestProductQueries {
@@ -57,25 +53,6 @@ public class TestProductQueries {
 		rs.close();
 		stmt.close();
 		return result;
-	}
-	
-	public static List<Products> getProductsList() throws Exception{
-		Statement stmt =  DBConnection.getConnection().createStatement();
-		ResultSet rs = stmt.executeQuery("SELECT * FROM PRODUCTS");
-		List<Products> productList = new ArrayList<Products>();
-		while(rs.next()) {
-			Products product = new Products();      
-			product.setId(rs.getInt("id"));
-			product.setName(rs.getString("name"));
-			product.setPrice(rs.getInt("price"));
-			product.setStatus(Products_status.fromInteger(rs.getInt("status")));
-			product.setCreated_at(rs.getTimestamp("created_at"));
-			productList.add(product);
-		}
-		
-		rs.close();
-		stmt.close();
-		return productList;
 	}
 	
 	public static int removeProductsById(int id) throws Exception {

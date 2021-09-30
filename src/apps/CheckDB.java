@@ -1,12 +1,12 @@
 package apps;
 
 import core.db.DBConnection;
-import dbApp.creator.Factory;
+import dbApp.tablesManager.Factory;
 
 public class CheckDB  {	
 
 	public static void main(String[] args) throws Exception {
-		Factory.getDBCreator().createTables();
+		Factory.getDBManager().createTables();
 		DBConnection.getConnection().close();
 	}
 }

@@ -24,7 +24,6 @@ public class CreateOrderCommand extends BaseCommand_ArgumentsList implements Com
 	@Override
 	protected boolean executeCommand() throws Exception {
 		boolean isQueryOK = false;
-		boolean isOrderCreated = false;
 		int resultOrderId = -1;
 		boolean isOrderItemsCreated = false;
 		resultOrderId = OrderDAO.createOrder((int)(Math.random() * (101)), 
