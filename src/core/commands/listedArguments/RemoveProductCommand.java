@@ -20,14 +20,9 @@ public class RemoveProductCommand extends BaseCommand_ArgumentsList implements C
 	@Override
 	public boolean executeCommand() throws Exception {
 		for (String param : params) {
-			int rowsCount = ProductDAO.removeProductsById(Integer.parseInt(param));
-		
-			if (0 == rowsCount) {
-				System.out.println("There is nothing to delete");
-			} else
-				System.out.println("Products were successfully removed");
+			ProductDAO.removeProductsById(Integer.parseInt(param));
 		}
-		
+		System.out.println("Products were successfully removed");
 		return true;
 	}
 

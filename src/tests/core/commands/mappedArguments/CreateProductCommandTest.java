@@ -1,16 +1,29 @@
-package tests.core.commands;
+package tests.core.commands.mappedArguments;
 
 import static org.junit.Assert.*;
 
+import org.junit.AfterClass;
+import org.junit.Before;
 import org.junit.Test;
 
 import core.commands.mappedArguments.CreateProductCommand;
 import core.persistent.CommandsErrors;
+import tests.core.commands.TestProductQueries;
 
 public class CreateProductCommandTest {
 	
 	CreateProductCommand command = new CreateProductCommand();
-
+	
+	@Before
+	public void before() throws Exception {
+		TestProductQueries.cleanDB();
+	}
+	
+	@AfterClass
+	public static void AfterClass() throws Exception {
+		TestProductQueries.cleanDB();
+	}
+	
 	@Test
 	public void testExecute_Valid() throws Exception {
 		assertTrue(command.execute("--name n --price 10 --status 0"));

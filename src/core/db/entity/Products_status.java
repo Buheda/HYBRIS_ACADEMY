@@ -3,8 +3,7 @@ package core.db.entity;
 public enum Products_status {
 	out_of_stock,
 	in_stock,
-	running_low,
-	none;
+	running_low;
 	
 	private final static Products_status[] enumValues = Products_status.values(); 
 	

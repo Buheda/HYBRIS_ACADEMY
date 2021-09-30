@@ -5,8 +5,7 @@ public enum CommandsErrors {
 	INVALID_PARAMETERS,
 	INVALID_KEY,
 	INVALID_VALUE,
-	INVALID_LIST,
-	INCORRECT_PASSWORD;
+	INVALID_LIST;
 
 	private static CommandsErrors currentError = null;
 	public static CommandsErrors getLastError() {
@@ -27,9 +26,6 @@ public enum CommandsErrors {
 				break;
 			case INVALID_LIST:
 				System.err.println("ERROR: Incorrect list of values");
-				break;
-			case INCORRECT_PASSWORD:
-				System.err.println("ERROR: Incorrect password for removing all products");
 				break;
 			default:
 				break;

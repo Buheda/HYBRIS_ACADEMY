@@ -13,14 +13,13 @@ public class RemoveAllProductsCommand extends BaseCommand_ArgumentsList implemen
 	@Override
 	protected boolean executeCommand() throws Exception {
 		boolean isQueryOK = false;
-		int rowsCount = ProductDAO.removeAllProducts(params.get(0));
-		if (-1 != rowsCount)
-			isQueryOK = true;
-		if (0 == rowsCount) {
-			System.out.println("There is nothing to delete");
-		} else {
+		if (core.persistent.FinalProperties.REMOVE_ALL_PRODUCTS_PASSWORD.equals(params.get(0))) {
+			ProductDAO.removeAllProducts();
 			System.out.println("Products were successfully removed");
-		}		
+			isQueryOK = true;
+		} else {
+			System.err.println("ERROR: Incorrect password for removing all products");
+		}
 		return isQueryOK;
 	}
 }

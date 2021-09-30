@@ -1,22 +1,31 @@
-package tests.core.commands;
+package tests.core.commands.listedArguments;
 
 import static org.junit.Assert.*;
 
-import java.util.HashMap;
-
+import org.junit.AfterClass;
+import org.junit.Before;
 import org.junit.Test;
 
 import core.commands.listedArguments.RemoveProductCommand;
 import core.persistent.CommandsErrors;
+import tests.core.commands.TestProductQueries;
 
 public class RemoveProductCommandTest {
 
 	RemoveProductCommand command = new RemoveProductCommand();
-	HashMap<String, String> argsString;
+		
+	@Before
+	public void before() throws Exception {
+		TestProductQueries.cleanDB();
+	}
+	
+	@AfterClass
+	public static void AfterClass() throws Exception {
+		TestProductQueries.cleanDB();
+	}
 	
 	@Test
 	public void testExecute_Valid() throws Exception {
-		TestProductQueries.removeAllProducts();
 		Integer id = TestProductQueries.createTestProduct();
 		assertTrue(TestProductQueries.isProductsExistsById(id));
 				
@@ -28,7 +37,7 @@ public class RemoveProductCommandTest {
 		id = TestProductQueries.createTestProduct();
 		assertTrue(TestProductQueries.isProductsExistsById(id));
 
-		assertTrue(command.execute((--id).toString()+ " "+ id.toString()));
+		assertTrue(command.execute(id.toString()+ " "+ (--id).toString()));
 		assertFalse(TestProductQueries.isProductsExistsById(id));
 	}
 

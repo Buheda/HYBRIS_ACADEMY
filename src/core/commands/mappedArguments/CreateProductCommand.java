@@ -5,7 +5,6 @@ import java.util.HashSet;
 
 import core.commands.Command;
 import core.db.dao.ProductDAO;
-import core.db.entity.Products;
 import core.db.entity.Products_status;
 import core.util.DateTimeFormatter;
 
@@ -31,7 +30,7 @@ public class CreateProductCommand extends BaseCommand_ArgumentsMap implements Co
 	
 	@Override
 	public boolean executeCommand() throws Exception {
-		boolean isQueryOK = false;
+		boolean isQueryOK = true;
 		int statusInt = Integer.parseInt(params.get("--status"));
 		Products_status status = Products_status.in_stock; 
 		switch (statusInt) {
@@ -43,22 +42,17 @@ public class CreateProductCommand extends BaseCommand_ArgumentsMap implements Co
 				break;					
 			case 2:
 				status = Products_status.running_low;
-				break;				
+				break;
+			default:
+				status = Products_status.in_stock;
+				break;
 		}
-		
-		Products newProduct = new Products(
-			params.get("--name"), 
-			Integer.parseInt(params.get("--price")),
-			status,
-			DateTimeFormatter.getNow());
-		
-		int id = ProductDAO.createProduct(newProduct);
-		if (-1 != id) {
-			isQueryOK = true;
-			System.out.println("Product was successfully added with id="+id);
-		} else  {
-			System.out.println("Product wasn't added");
-		}
+			
+		int id = ProductDAO.createProduct(params.get("--name"), 
+										Integer.parseInt(params.get("--price")),
+										status,
+										DateTimeFormatter.getNow());
+		System.out.println("Product was successfully added with id= "+id);
 		return isQueryOK;
 	}
 

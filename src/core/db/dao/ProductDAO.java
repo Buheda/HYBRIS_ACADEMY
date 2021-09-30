@@ -3,34 +3,34 @@ package core.db.dao;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
 import core.db.DBConnection;
 import core.db.entity.Products;
 import core.db.entity.Products_status;
-import core.persistent.CommandsErrors;
 
 public class ProductDAO {
 
-	public static int createProduct(Products product) throws Exception {
+	public static int createProduct(String name, int price, Products_status status, Timestamp created_at) throws Exception {
 		String sql = "INSERT INTO PRODUCTS (name, price, status, created_at) Values (?, ?, ?, ?)";
-		PreparedStatement preparedStatement = DBConnection.getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-		preparedStatement.setString(1, product.getName());
-		preparedStatement.setInt(2, product.getPrice());
-		preparedStatement.setInt(3, product.getStatus().ordinal());
-		preparedStatement.setTimestamp(4, product.getCreated_at());
+		PreparedStatement preparedStatement = DBConnection.getConnection().prepareStatement(sql, 
+				Statement.RETURN_GENERATED_KEYS);
+		preparedStatement.setString(1, name);
+		preparedStatement.setInt(2, price);
+		preparedStatement.setInt(3, status.ordinal());
+		preparedStatement.setTimestamp(4, created_at);
 		preparedStatement.executeUpdate(); 
 		ResultSet rs = preparedStatement.getGeneratedKeys();
 
-		int result = -1;
-		if (rs.next()) {
-			result = rs.getInt("id");
-		}
-		
+		rs.next();
+		int result = rs.getInt("id");
+				
 		preparedStatement.close();
 		return result;
 	}
+	
 	
 	public static int getAllProducts_MaxLength() throws Exception  {
 		Statement stmt =  DBConnection.getConnection().createStatement();
@@ -86,24 +86,15 @@ public class ProductDAO {
 
 	}
 
-	public static int removeProductsById(int id) throws Exception {
+	public static void removeProductsById(int id) throws Exception {
 		Statement stmt =  DBConnection.getConnection().createStatement();
-		int result = stmt.executeUpdate("DELETE FROM PRODUCTS where ID ="+id);
+		stmt.executeUpdate("DELETE FROM PRODUCTS where ID ="+id);
 		stmt.close();
-		return result;
 	}
 
-	public static int removeAllProducts(String password) throws Exception {
-		if (core.persistent.FinalProperties.REMOVE_ALL_PRODUCTS_PASSWORD.equals(password)) {
-			Statement stmt =  DBConnection.getConnection().createStatement();
-			int result = stmt.executeUpdate("DELETE FROM PRODUCTS");
-			stmt.close();
-			return result;
-		} else {
-			CommandsErrors.showCommandsErrorsMessage(CommandsErrors.INCORRECT_PASSWORD);
-			return -1;
-		}
-		
+	public static void removeAllProducts() throws Exception {
+		Statement stmt =  DBConnection.getConnection().createStatement();
+		stmt.executeUpdate("DELETE FROM PRODUCTS");
+		stmt.close();
 	}
-	
 }
