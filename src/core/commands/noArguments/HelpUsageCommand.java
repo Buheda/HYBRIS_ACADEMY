@@ -30,6 +30,7 @@ public class HelpUsageCommand implements Command {
 		System.out.println("	<arg3>  quantity of products in order, integer");
 		System.out.println("show_all_products");
 		System.out.println("show_ordered_products");
+		System.out.println("show_all_orders");
 		System.out.println("remove_product <arg1> <arg2> <arg3> <argN>");
 		System.out.println("  	<argN>  ids of products which should be removed, integer");
 		System.out.println("remove_all_products <password>");

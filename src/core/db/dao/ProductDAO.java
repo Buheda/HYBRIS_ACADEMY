@@ -82,8 +82,13 @@ public class ProductDAO {
 		return productList;
 	}
 	
-	public static void getAllOrderedProductsList() {
-		/*SELECT ID, PRICE, STATUS, sum(quantity) as quantity FROM PRODUCTS INNER JOIN ORDER_ITEMS on PRODUCTS.id = ORDER_ITEMS.product_id group by id, price, status*/
+	public static ResultSet getAllOrderedProductsList() throws Exception {
+		Statement stmt =  DBConnection.getConnection().createStatement();
+		ResultSet rs = stmt.executeQuery("SELECT product_id as id, name, price, status, sum(quantity) as quantity "
+				+ "FROM PRODUCTS INNER JOIN ORDER_ITEMS on PRODUCTS.id = ORDER_ITEMS.product_id "
+				+ "group by product_id, name, price, status order by quantity desc");
+		stmt.close();
+		return rs;		
 	}
 
 	public static void removeProductsById(int id) throws Exception {

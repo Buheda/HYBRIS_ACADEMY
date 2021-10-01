@@ -1,5 +1,8 @@
 package core.commands.noArguments;
 
+import java.security.interfaces.RSAKey;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Collections;
 import java.util.List;
 
@@ -14,28 +17,33 @@ public class ShowAllOrderedProductsCommand implements Command {
 		System.out.printf("|%s|%s|%s|%s|%s|\n", id, name, price, status, quantity);
 	}
 	
-	private void showProductsTable(List<Products> productsList) {
+	private void showProductsTable(ResultSet productList) throws Exception {
 		int nameFieldLength = ProductDAO.getAllProducts_MaxLength();
 		
-		final int idFieldLength = 10;
+		final String idField = "Product ID";
+		final int idFieldLength = idField.length();
 		 
 		final String nameField = "Product Name";
 		final int minNameFieldLength = nameField.length();
 		
-		final String priceField = "Product Name";
-		final int minPriceFieldLength = "Product Price".length();
+		final String priceField = "Product Price";
+		final int priceFieldLength = "Product Price".length();
 		
 		final String statusField = "Product Status";
-		final int minStatusFieldLength = statusField.length();
-					
+		final int statusFieldLength = statusField.length();
+
+		final String quantityField = "Quantity";
+		final int quantityFieldLength = quantityField.length();
+		
 	    if (nameFieldLength < minNameFieldLength)
 			nameFieldLength = minNameFieldLength;
 	    
 	    showProductsTableLine(
-				String.format("%-"+idFieldLength+"s", "id"),
-				String.format("%-"+nameFieldLength+"."+ nameFieldLength+"s", nameField),
-				String.format("%-"+minPriceFieldLength+"."+minPriceFieldLength+"s", priceField),
-				String.format("%-"+minStatusFieldLength+"s", statusField), statusField
+				String.format("%-"+idFieldLength+"s", idField),
+				String.format("%-"+nameFieldLength+"s", nameField),
+				String.format("%-"+priceFieldLength+"s", priceField),
+				String.format("%-"+statusFieldLength+"s", statusField),
+				String.format("%-"+quantityFieldLength+"s", quantityField)				
 				);
 	
 	    showProductsTableLine(
@@ -43,31 +51,33 @@ public class ShowAllOrderedProductsCommand implements Command {
 						String.join("", Collections.nCopies(idFieldLength, "-"))),
 				String.format("%-"+nameFieldLength+"."+ nameFieldLength+"s", 
 						String.join("", Collections.nCopies(nameFieldLength, "-"))),
-				String.format("%-"+minPriceFieldLength+"."+minPriceFieldLength+"s",
-						String.join("", Collections.nCopies(minPriceFieldLength, "-"))),
-				String.format("%-"+minStatusFieldLength+"s",
-						String.join("", Collections.nCopies(minStatusFieldLength, "-"))), statusField
+				String.format("%-"+priceFieldLength+"."+priceFieldLength+"s",
+						String.join("", Collections.nCopies(priceFieldLength, "-"))),
+				String.format("%-"+statusFieldLength+"s",
+						String.join("", Collections.nCopies(statusFieldLength, "-"))),
+				String.format("%-"+quantityFieldLength+"s",
+						String.join("", Collections.nCopies(quantityFieldLength, "-")))
 				);
-		
-		for (Products product : productsList) {
+	    do {
 			showProductsTableLine(
-					String.format("%-"+idFieldLength+"s", product.getId()),
-					String.format("%-"+ nameFieldLength+"s", product.getName()),
-					String.format("%-"+minPriceFieldLength+"s", product.getPrice()),
-					String.format("%-"+minStatusFieldLength+"s", product.getStatus()), statusField
+					String.format("%-"+idFieldLength+"s", productList.getInt("id")),
+					String.format("%-"+ nameFieldLength+"s", productList.getString("name")),
+					String.format("%-"+priceFieldLength+"s", productList.getInt("price")),
+					String.format("%-"+statusFieldLength+"s", productList.getString("status")),
+					String.format("%-"+quantityFieldLength+"s", productList.getInt("quantity"))				
 					);
-		}
+		} while (productList.next());
 	}
 	
 	@Override
 	public boolean execute(String argsString) throws Exception {
 		boolean isQueryOK = false;
-		List<Products> productsList = ProductDAO.getProductsList();
+		ResultSet productList = ProductDAO.getAllOrderedProductsList();
 		isQueryOK = true;
-		if (productsList.isEmpty()) {
-			System.out.println("Product table is empty");
+		if (!productList.next()) {
+			System.out.println("Products table is empty");
 		} else {
-			showProductsTable(productsList);
+			showProductsTable(productList);
 		}
 		return isQueryOK;
 	}

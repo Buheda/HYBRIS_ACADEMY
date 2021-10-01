@@ -10,6 +10,7 @@ import core.commands.mappedArguments.CreateProductCommand;
 import core.commands.mappedArguments.UpdateOrderCommand;
 import core.commands.noArguments.ExitApplicationCommand;
 import core.commands.noArguments.HelpUsageCommand;
+import core.commands.noArguments.ShowAllOrderedProductsCommand;
 import core.commands.noArguments.ShowAllOrdersCommand;
 import core.commands.noArguments.ShowAllProductsCommand;
 import core.commands.noArguments.UnknownCommand;
@@ -49,7 +50,7 @@ public class ShopApplication {
 						command = new ShowAllProductsCommand();
 						break;
 					case "show_ordered_products":
-						command = new ShowAllProductsCommand();
+						command = new ShowAllOrderedProductsCommand();
 						break;
 					case "show_all_orders":
 						command = new ShowAllOrdersCommand();
@@ -71,7 +72,7 @@ public class ShopApplication {
 					command.execute(null);
 				
 			} catch (Exception e) {
-				System.err.println(e.getStackTrace());
+				System.err.println(e);
 			}  
 		}
 	//	
