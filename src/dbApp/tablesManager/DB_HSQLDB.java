@@ -112,36 +112,6 @@ public class DB_HSQLDB implements DB {
 		return isTableExist;
 	};
 	
-	private boolean CreateTable_ProductsStatus(StringBuilder curTableName) throws Exception {
-		boolean isTableExist = false;
-		curTableName = new StringBuilder("PRODUCTS_STATUS");
-		
-		Statement stmt =  DBConnection.getConnection().createStatement();
-		stmt.executeUpdate("CREATE TABLE IF NOT EXISTS "+curTableName+" ("
-				+ "  id int NOT NULL IDENTITY,"
-				+ "  status varchar(255) NOT NULL,"
-				+ "  PRIMARY KEY (id)"
-				+ ")");
-		
-		DatabaseMetaData databaseMetaData = DBConnection.getConnection().getMetaData();
-		ResultSet rs = databaseMetaData.getTables(null, null, curTableName.toString(), new String[] {"TABLE"});
-		
- 	    while (rs.next()) {
-            String tName = rs.getString("TABLE_NAME");
-            if (tName != null && tName.equals(curTableName.toString())) {
-            	System.out.println(curTableName+" exist");
-            	isTableExist = true;
-            	stmt.executeUpdate("DELETE FROM "+curTableName);
-            	stmt.executeUpdate("INSERT INTO "+curTableName+" (id, status) VALUES (0, 'out_of_stock')");
-            	stmt.executeUpdate("INSERT INTO "+curTableName+" (id, status) VALUES (1, 'in_stock')");
-            	stmt.executeUpdate("INSERT INTO "+curTableName+" (id, status) VALUES (2, 'running_low')");
-            }
-        }
-		rs.close();
-		stmt.close();
-		return isTableExist;
-	};
-	
 	@Override
 	public boolean dropTables() throws Exception {
 		String curTable = "Tables";

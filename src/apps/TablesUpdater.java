@@ -6,6 +6,7 @@ import core.commands.Command;
 import core.commands.listedArguments.CreateOrderCommand;
 import core.commands.mappedArguments.CreateProductCommand;
 import core.commands.mappedArguments.UpdateOrderCommand;
+import core.commands.noArguments.ShowAllOrdersCommand;
 import core.commands.noArguments.ShowAllProductsCommand;
 import core.db.DBConnection;
 import core.db.entity.Products;
@@ -15,7 +16,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 
-public class Generator {
+public class TablesUpdater {
 	private static Scanner scanner;
 	private final static int COUNT_RECORD = 50;
 	private final static PrintStream oldOut = System.out;
@@ -62,9 +63,9 @@ public class Generator {
 	
 	private static void generateProducts() throws Exception {
 		System.out.println("Generating products...");
-		CreateProductCommand command = new CreateProductCommand();
 		switchOffConsole();
 		
+		Command command = new CreateProductCommand();
 		int countPossibleStatuses = 3;
 		int maxPrice = 1500;
 		int minPrice = 100;
@@ -74,14 +75,19 @@ public class Generator {
 			command.execute("--name Product"+i+" --status "+Products.getStatusTypes().get(status)+" --price "+price);
 		}
 		switchOnConsole();
+		
+		command = new ShowAllProductsCommand();
+		command.execute();
+		
 		System.out.println("Done!");
 	}
 	
 	private static void generateOrders() throws Exception {
 		System.out.println("Generating orders...");
+		switchOffConsole();
+
 		Command command = new CreateOrderCommand();
 		StringBuffer params = new StringBuffer();
-		switchOffConsole();
 		int maxProductsCountInOrder = 10;
 		for (int i = 0; i < COUNT_RECORD; ++i) {
 			int productsCountInOrder = 1 + (int)(Math.random() * maxProductsCountInOrder);  
@@ -103,13 +109,13 @@ public class Generator {
 			command.execute("--orderid "+orderId+" --productid "+productid+" --quantity "+quantity);
 		}
 		switchOnConsole();
+		
+		command = new ShowAllOrdersCommand();
+		command.execute();
+		
 		System.out.println("Done!");
 	}
 		
-	private static void showAllProducts() throws Exception {
-		ShowAllProductsCommand command = new ShowAllProductsCommand();
-		command.execute();
-	}
 	
 	public static void main(String[] args) throws Exception {
 
@@ -121,7 +127,6 @@ public class Generator {
 		if (askYN("Do you need to generate example data?")) {
 			generateProducts();
 			generateOrders();
-			showAllProducts();
 		}
 		
 		DBConnection.getConnection().close();

@@ -44,9 +44,22 @@ public class CreateProductCommandTest {
 	}
 	
 	@Test
+	public void testExecute_NotEmptyCommandStr_EmptyParams() throws Exception {
+		assertFalse(command.execute("param"));
+		assertEquals(CommandsErrors.INVALID_PARAMETERS, CommandsErrors.getLastError());
+	}
+	
+	@Test
 	public void testExecute_NoParams() throws Exception {
 		assertFalse(command.execute(""));
 		assertEquals(CommandsErrors.INVALID_PARAMETERS, CommandsErrors.getLastError());
+
+		assertFalse(command.execute("name"));
+		assertEquals(CommandsErrors.INVALID_PARAMETERS, CommandsErrors.getLastError());
+
+		assertFalse(command.execute("name"));
+		assertEquals(CommandsErrors.INVALID_PARAMETERS, CommandsErrors.getLastError());
+
 	}
 	
 	@Test

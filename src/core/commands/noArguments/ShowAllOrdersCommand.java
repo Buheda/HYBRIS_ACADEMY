@@ -2,12 +2,10 @@ package core.commands.noArguments;
 
 import java.sql.ResultSet;
 import java.util.Collections;
-import java.util.List;
 
 import core.commands.Command;
 import core.db.dao.OrderDAO;
 import core.db.dao.ProductDAO;
-import core.db.entity.Products;
 
 public class ShowAllOrdersCommand implements Command {
 	

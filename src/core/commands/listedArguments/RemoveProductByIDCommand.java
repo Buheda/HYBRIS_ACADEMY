@@ -3,7 +3,7 @@ package core.commands.listedArguments;
 import core.commands.Command;
 import core.db.dao.ProductDAO;
 
-public class RemoveProductCommand extends BaseCommand_ArgumentsList implements Command {
+public class RemoveProductByIDCommand extends BaseCommand_ArgumentsList implements Command {
 	
 	@Override
 	protected boolean isParamsValuesValid() {

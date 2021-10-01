@@ -6,13 +6,13 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
 
-import core.commands.listedArguments.RemoveProductCommand;
+import core.commands.listedArguments.RemoveProductByIDCommand;
 import core.persistent.CommandsErrors;
 import tests.core.commands.TestProductQueries;
 
 public class RemoveProductCommandTest {
 
-	RemoveProductCommand command = new RemoveProductCommand();
+	RemoveProductByIDCommand command = new RemoveProductByIDCommand();
 		
 	@Before
 	public void before() throws Exception {

@@ -48,7 +48,7 @@ public abstract class BaseCommand_ArgumentsMap implements Command {
 				for (int i=0;i<argsArr.size();i++) {
 	
 					String[] pair = argsArr.get(i).split(" ");
-					if (allowedSplittedWordsLength != pair.length ||  StringUtil.isEmptyString(pair[1])) {
+					if (allowedSplittedWordsLength != pair.length) {
 						CommandsErrors.showCommandsErrorsMessage(CommandsErrors.INVALID_VALUE, pair[0]);
 						return false;
 					}

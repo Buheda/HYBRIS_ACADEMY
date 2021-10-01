@@ -1,15 +1,10 @@
 package core.commands.noArguments;
 
-import java.security.interfaces.RSAKey;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.Collections;
-import java.util.List;
-
 
 import core.commands.Command;
 import core.db.dao.ProductDAO;
-import core.db.entity.Products;
 
 public class ShowAllOrderedProductsCommand implements Command {
 	

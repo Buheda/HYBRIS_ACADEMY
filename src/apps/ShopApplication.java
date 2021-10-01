@@ -5,7 +5,7 @@ import java.util.Scanner;
 import core.commands.*;
 import core.commands.listedArguments.CreateOrderCommand;
 import core.commands.listedArguments.RemoveAllProductsCommand;
-import core.commands.listedArguments.RemoveProductCommand;
+import core.commands.listedArguments.RemoveProductByIDCommand;
 import core.commands.mappedArguments.CreateProductCommand;
 import core.commands.mappedArguments.UpdateOrderCommand;
 import core.commands.noArguments.ExitApplicationCommand;
@@ -56,7 +56,7 @@ public class ShopApplication {
 						command = new ShowAllOrdersCommand();
 						break;
 					case "remove_product":
-						command = new RemoveProductCommand();
+						command = new RemoveProductByIDCommand();
 						break;					
 					case "remove_all_products":
 						command = new RemoveAllProductsCommand();
