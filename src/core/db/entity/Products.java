@@ -19,14 +19,6 @@ public class Products {
 	private String status;
 
 	private Timestamp created_at;
-
-	public Products(String name, int price, String status, Timestamp created_at) {
-		this.id = 0;
-		this.name = name;
-		this.price = price;
-		this.status = status;
-		this.created_at = created_at;
-	}
 	
 	public Products(int id, String name, int price, String status, Timestamp created_at) {
 		this.id = id;

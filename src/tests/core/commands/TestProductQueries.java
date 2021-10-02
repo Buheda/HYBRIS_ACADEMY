@@ -28,11 +28,9 @@ public class TestProductQueries {
 		
 		ResultSet rs = preparedStatement.getGeneratedKeys();
 
-		int result = -1;
-		if (rs.next()) {
-			result = rs.getInt("id");
-		}
-		
+		rs.next();
+		int result = rs.getInt("id");
+				
 		preparedStatement.close();
 		return result;
 		
@@ -122,6 +120,15 @@ public class TestProductQueries {
 		return result;
 	}
 	
+	public static boolean isOrderExistsById(int id) throws Exception {
+		Statement stmt =  DBConnection.getConnection().createStatement();
+		ResultSet rs = stmt.executeQuery("SELECT * FROM ORDERS where id="+id);
+		boolean result = rs.next();
+		rs.close();
+		stmt.close();
+		return result;
+	}
+	
 	public static boolean createOrderItem(Order_items item) throws Exception {
 		String sql = "INSERT INTO ORDER_ITEMS (order_id, product_id, quantity) Values (?, ?, ?)";
 		PreparedStatement preparedStatement = DBConnection.getConnection().prepareStatement(sql);
@@ -146,6 +153,5 @@ public class TestProductQueries {
 		stmt.executeUpdate("DELETE FROM ORDERS");
 		stmt.close();
 	}
-
 
 }

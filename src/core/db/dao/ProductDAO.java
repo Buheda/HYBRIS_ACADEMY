@@ -10,7 +10,7 @@ import java.util.List;
 import core.db.DBConnection;
 import core.db.entity.Products;
 
-public class ProductDAO {
+public abstract class ProductDAO {
 
 	public static int createProduct(String name, int price, String status, Timestamp created_at) throws Exception {
 		String sql = "INSERT INTO PRODUCTS (name, price, status, created_at) Values (?, ?, ?, ?)";
@@ -46,16 +46,7 @@ public class ProductDAO {
 		}
 		return result;
 	}
-	
-	public static boolean isProductsExists() throws Exception {
-		Statement stmt =  DBConnection.getConnection().createStatement();
-		ResultSet rs = stmt.executeQuery("SELECT * FROM PRODUCTS");
-		boolean result = rs.next();
-		rs.close();
-		stmt.close();
-		return result;
-	}
-	
+		
 	public static boolean isProductsExistsById(int id) throws Exception {
 		Statement stmt =  DBConnection.getConnection().createStatement();
 		ResultSet rs = stmt.executeQuery("SELECT * FROM PRODUCTS where id="+id);

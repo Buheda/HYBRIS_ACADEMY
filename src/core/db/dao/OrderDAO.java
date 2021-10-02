@@ -8,7 +8,7 @@ import java.sql.Statement;
 import core.db.DBConnection;
 import core.db.entity.Order_items;
 
-public class OrderDAO {
+public abstract class OrderDAO {
 
 	public static int createOrder(int user_id, String status, String created_at) throws Exception {
 		String sql = "INSERT INTO ORDERS (user_id, status, created_at) Values (?, ?, ?)";
@@ -28,11 +28,10 @@ public class OrderDAO {
 		return result;
 	}
 	
-	public static boolean removeOrderById(int id) throws Exception {
+	public static void removeOrderById(int id) throws Exception {
 		Statement stmt =  DBConnection.getConnection().createStatement();
-		int result = stmt.executeUpdate("DELETE FROM ORDERS where ID ="+id);
+		stmt.executeUpdate("DELETE FROM ORDERS where ID ="+id);
 		stmt.close();
-		return result>0;
 	}
 	
 	public static boolean createOrderItem(Order_items item) throws Exception {
@@ -41,12 +40,11 @@ public class OrderDAO {
 		preparedStatement.setInt(1, item.getOrder_id());
 		preparedStatement.setInt(2, item.getProduct_id());
 		preparedStatement.setInt(3, item.getQuantity());
-		
-		boolean result = false;
+		boolean result = true;
 		try {
-			int rowCount = preparedStatement.executeUpdate();
-			result = rowCount > 0;
+			preparedStatement.executeUpdate();
 		} catch (SQLIntegrityConstraintViolationException E) {
+			result = false;
 			System.err.println("Order Item wasn't added. The same product already added to order");	
 		}
 		
