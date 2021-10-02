@@ -4,7 +4,7 @@ import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
-public class DateTimeFormatter {
+public abstract class DateTimeFormatter {
     private static final DateFormat dateFormatter = new SimpleDateFormat("YYYY-MM-dd HH:mm");
        
     public static Timestamp getNow() {

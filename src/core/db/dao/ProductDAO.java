@@ -42,6 +42,7 @@ public class ProductDAO {
 			rs.close();
 			stmt.close();
 		} catch (Exception e) {
+			result = -1;
 		}
 		return result;
 	}

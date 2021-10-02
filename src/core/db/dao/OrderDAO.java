@@ -66,11 +66,20 @@ public class OrderDAO {
 		return rowCount>0;
 	}
 
-	public static ResultSet getAllOrdersList() throws Exception {
+	public static ResultSet getAllOrdersFullInfoList() throws Exception {
 		Statement stmt =  DBConnection.getConnection().createStatement();
 		ResultSet rs = stmt.executeQuery("SELECT ORDERS.id as id, price*quantity as price, name, quantity, ORDERS.created_at  as created_at"
 				+ " FROM PRODUCTS INNER JOIN ORDER_ITEMS on PRODUCTS.id = ORDER_ITEMS.product_id "
 				+ "inner join orders on orders.id = order_items.order_id order by orders.id");
+		stmt.close();
+		return rs;	
+	}
+
+	public static ResultSet getOrderFullInfoById(int id) throws Exception {
+		Statement stmt =  DBConnection.getConnection().createStatement();
+		ResultSet rs = stmt.executeQuery("SELECT ORDERS.id as id, price*quantity as price, name, quantity, ORDERS.created_at  as created_at"
+				+ " FROM PRODUCTS INNER JOIN ORDER_ITEMS on PRODUCTS.id = ORDER_ITEMS.product_id "
+				+ "inner join orders on orders.id = order_items.order_id where orders.id="+id+" order by orders.id");
 		stmt.close();
 		return rs;	
 	}

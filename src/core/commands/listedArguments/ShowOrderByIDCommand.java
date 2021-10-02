@@ -1,4 +1,4 @@
-package core.commands.noArguments;
+package core.commands.listedArguments;
 
 import java.sql.ResultSet;
 import java.util.Collections;
@@ -7,7 +7,7 @@ import core.commands.Command;
 import core.db.dao.OrderDAO;
 import core.db.dao.ProductDAO;
 
-public class ShowAllOrdersCommand implements Command {
+public class ShowOrderByIDCommand extends BaseCommand_ArgumentsList implements Command {
 	
 	private void showOrdersTableLine(String id, String price, String name, String quantity, String created_at) {
 		System.out.printf("|%s|%s|%s|%s|%s|\n", id, price, name, quantity, created_at);
@@ -67,19 +67,26 @@ public class ShowAllOrdersCommand implements Command {
 	}
 	
 	@Override
-	public boolean execute(String argsString) throws Exception {
+	protected boolean isParamsValuesValid() {
+		try {
+			Integer.parseInt(params.get(0));
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+	}
+	
+	@Override
+	public boolean executeCommand() throws Exception {
 		boolean isQueryOK = false;
-		ResultSet orderList = OrderDAO.getAllOrdersFullInfoList();
-		isQueryOK = true;
-		if (!orderList.next()) {
-			System.out.println("Orders table is empty");
+		ResultSet order = OrderDAO.getOrderFullInfoById(Integer.parseInt(params.get(0)));
+		if (!order.next()) {
+			System.out.println("Order is not found");
 		} else {
-			showOrdersTable(orderList);
+			showOrdersTable(order);
+			isQueryOK = true;
 		}
 		return isQueryOK;
 	}
-	
-
-
 }
 

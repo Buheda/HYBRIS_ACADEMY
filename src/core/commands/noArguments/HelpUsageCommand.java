@@ -8,11 +8,12 @@ public class HelpUsageCommand implements Command {
 		System.out.println("This application supports next commands:");
 		System.out.println("	Help - info about application usage");
 		System.out.println("	Create Product");
-		System.out.println("	Create Order with a list of the products specified by id.");
+		System.out.println("	Create Order with a list of the products specified by id");
 		System.out.println("	Update Order - update quantities of product in order");
-		System.out.println("	Show list of all products.");
+		System.out.println("	Show list of all products");
 		System.out.println("	Show list of all products which have been ordered");
-		System.out.println("	Show list of all orders.");
+		System.out.println("	Show order by id");
+		System.out.println("	Show list of all orders");
 		System.out.println("	Remove product by ID. Note! you can't delete ordered products)");
 		System.out.println("	Remove all products. Note! you can't delete ordered products");
 		System.out.println("	exit - exit from application");
@@ -30,6 +31,8 @@ public class HelpUsageCommand implements Command {
 		System.out.println("	<arg3>  quantity of products in order, integer");
 		System.out.println("show_all_products");
 		System.out.println("show_ordered_products");
+		System.out.println("show_order <arg>");
+		System.out.println("	<arg>   order id, integer");
 		System.out.println("show_all_orders");
 		System.out.println("remove_product <arg1> <arg2> <arg3> <argN>");
 		System.out.println("  	<argN>  ids of products which should be removed, integer");

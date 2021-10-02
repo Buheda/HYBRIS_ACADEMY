@@ -50,7 +50,8 @@ public class RemoveProductCommandTest {
 	
 	@Test
 	public void testExecute_StringId() throws Exception {
-		assertFalse(command.execute("sdfa"));	
+		assertFalse(command.execute("sdfa"));
+		assertEquals(CommandsErrors.INVALID_LIST, CommandsErrors.getLastError());
 	}
 	
 	@Test

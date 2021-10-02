@@ -6,6 +6,7 @@ import core.commands.*;
 import core.commands.listedArguments.CreateOrderCommand;
 import core.commands.listedArguments.RemoveAllProductsCommand;
 import core.commands.listedArguments.RemoveProductByIDCommand;
+import core.commands.listedArguments.ShowOrderByIDCommand;
 import core.commands.mappedArguments.CreateProductCommand;
 import core.commands.mappedArguments.UpdateOrderCommand;
 import core.commands.noArguments.ExitApplicationCommand;
@@ -46,6 +47,9 @@ public class ShopApplication {
 					case "update_order":
 						command = new UpdateOrderCommand();
 						break;
+					case "show_order":
+						command = new ShowOrderByIDCommand();
+						break;						
 					case "show_all_products":
 						command = new ShowAllProductsCommand();
 						break;

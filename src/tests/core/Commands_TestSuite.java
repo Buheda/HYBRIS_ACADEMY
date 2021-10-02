@@ -11,7 +11,8 @@ import tests.core.commands.mappedArguments.*;
 @SuiteClasses({
 	CreateProductCommandTest.class,
 	CreateOrderCommandTest.class,
-	UpdateOrderCommandTest.class, 
+	UpdateOrderCommandTest.class,
+	ShowOrderByIDCommandTest.class,
 	RemoveAllProductsTest.class, 
 	RemoveProductCommandTest.class
 	})
