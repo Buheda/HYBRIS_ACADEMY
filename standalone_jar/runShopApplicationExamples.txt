@@ -1,0 +1,16 @@
+examples how to run application with command and parameters
+
+java -jar ShopApplication.jar
+java -jar ShopApplication.jar create_product --name TestName --price 10 --status in_stock
+java -jar ShopApplication.jar create_order 10 5 20 1
+java -jar ShopApplication.jar update_order --orderid 10 --productid 10 --quantity 10
+java -jar ShopApplication.jar show_all_products
+java -jar ShopApplication.jar show_ordered_products
+java -jar ShopApplication.jar show_order 5
+java -jar ShopApplication.jar show_all_orders
+java -jar ShopApplication.jar remove_product 5 10 15 20
+java -jar ShopApplication.jar remove_all_products fghj
+java -jar ShopApplication.jar help
+java -jar ShopApplication.jar exit
+
+

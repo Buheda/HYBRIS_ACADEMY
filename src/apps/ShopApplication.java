@@ -66,13 +66,12 @@ public class ShopApplication {
 	
 	private static void parseCommandLineAndExecute(String commandLine) throws Exception {
 		String[] commandsArr = commandLine.split(" ", 2);
-		
 		Command command = switchCommand(commandsArr[0]);		
 
 		if (commandsArr.length > 1)
 			command.execute(commandsArr[1]);
 		else 
-			command.execute(null);
+			command.execute();
 	}	
 	
 	public static void main(String[] args)  {
@@ -82,7 +81,7 @@ public class ShopApplication {
 				command = switchCommand(args[0]);
 				command.execute();
 			} else if (args.length > 1) {
-				String commandLine = String.join(",", args);
+				String commandLine = String.join(" ", args);
 				parseCommandLineAndExecute(commandLine);
 			} else {
 				HelpUsageCommand.showUsageInfo();				
