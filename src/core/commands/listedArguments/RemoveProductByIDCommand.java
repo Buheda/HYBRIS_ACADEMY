@@ -19,10 +19,15 @@ public class RemoveProductByIDCommand extends BaseCommand_ArgumentsList implemen
 	
 	@Override
 	public boolean executeCommand() throws Exception {
+		boolean isRemovedOK = false;
 		for (String param : params) {
-			ProductDAO.removeProductsById(Integer.parseInt(param));
-		}
-		System.out.println("Products were successfully removed");
+			if (!ProductDAO.removeProductsById(Integer.parseInt(param)))
+				System.out.println("product id:"+param + " can't be deleted");
+			else
+				isRemovedOK = true;
+		} 
+		if (isRemovedOK)
+			System.out.println("Products were successfully removed");
 		return true;
 	}
 

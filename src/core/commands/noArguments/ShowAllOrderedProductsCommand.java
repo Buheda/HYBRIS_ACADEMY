@@ -1,7 +1,9 @@
 package core.commands.noArguments;
 
-import java.sql.ResultSet;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+
 
 import core.commands.Command;
 import core.db.dao.ProductDAO;
@@ -12,7 +14,7 @@ public class ShowAllOrderedProductsCommand implements Command {
 		System.out.printf("|%s|%s|%s|%s|%s|\n", id, name, price, status, quantity);
 	}
 	
-	private void showProductsTable(ResultSet productList) throws Exception {
+	private void showProductsTable(List<HashMap<Object,Object>> productsList) throws Exception {
 		int nameFieldLength = ProductDAO.getAllProducts_MaxLength();
 		
 		final String idField = "Product ID";
@@ -53,26 +55,27 @@ public class ShowAllOrderedProductsCommand implements Command {
 				String.format("%-"+quantityFieldLength+"s",
 						String.join("", Collections.nCopies(quantityFieldLength, "-")))
 				);
-	    do {
-			showProductsTableLine(
-					String.format("%-"+idFieldLength+"s", productList.getInt("id")),
-					String.format("%-"+ nameFieldLength+"s", productList.getString("name")),
-					String.format("%-"+priceFieldLength+"s", productList.getInt("price")),
-					String.format("%-"+statusFieldLength+"s", productList.getString("status")),
-					String.format("%-"+quantityFieldLength+"s", productList.getInt("quantity"))				
+	    
+	    for (HashMap<Object, Object> product : productsList) {
+	    	showProductsTableLine(
+					String.format("%-"+idFieldLength+"s", product.get("id")),
+					String.format("%-"+ nameFieldLength+"s", product.get("name")),
+					String.format("%-"+priceFieldLength+"s", product.get("price")),
+					String.format("%-"+statusFieldLength+"s", product.get("status")),
+					String.format("%-"+quantityFieldLength+"s", product.get("quantity"))				
 					);
-		} while (productList.next());
+		}	   
 	}
 	
 	@Override
 	public boolean execute(String argsString) throws Exception {
 		boolean isQueryOK = false;
-		ResultSet productList = ProductDAO.getAllOrderedProductsList();
+		List<HashMap<Object, Object>> productsList = ProductDAO.getAllOrderedProductsList();
 		isQueryOK = true;
-		if (!productList.next()) {
-			System.out.println("Products table is empty");
+		if (productsList.isEmpty()) {
+			System.out.println("Ordered products table is empty");
 		} else {
-			showProductsTable(productList);
+			showProductsTable(productsList);
 		}
 		return isQueryOK;
 	}

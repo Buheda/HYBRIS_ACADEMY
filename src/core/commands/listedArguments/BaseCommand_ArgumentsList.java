@@ -16,7 +16,7 @@ public abstract class BaseCommand_ArgumentsList implements Command {
 	
 	@Override
 	final public boolean execute(String argsString) throws Exception {
-		if (!StringUtil.isEmptyString(argsString.trim())) {
+		if (!StringUtil.isEmptyString(argsString)) {
 			String[] words = argsString.trim().split("\\s+");
 			params = new ArrayList<String>(Arrays.asList(words));
 			if (isParamsValuesValid()) {

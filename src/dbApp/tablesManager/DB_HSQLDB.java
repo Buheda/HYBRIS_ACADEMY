@@ -42,7 +42,7 @@ public class DB_HSQLDB implements DB {
 		ResultSet rs = databaseMetaData.getTables(null, null, curTableName.toString(), new String[] {"TABLE"});
  	    while (rs.next()) {
             String tName = rs.getString("TABLE_NAME");
-            if (tName != null && tName.equals(curTableName.toString())) {
+            if (tName != null && tName.equalsIgnoreCase(curTableName.toString())) {
             	System.out.println(curTableName+" exist");
             	isTableExist = true;
             }
@@ -74,7 +74,7 @@ public class DB_HSQLDB implements DB {
 		
  	    while (rs.next()) {
             String tName = rs.getString("TABLE_NAME");
-            if (tName != null && tName.equals(curTableName.toString())) {
+            if (tName != null && tName.equalsIgnoreCase(curTableName.toString())) {
             	System.out.println(curTableName+" exist");
             	isTableExist = true;
             }
@@ -102,7 +102,7 @@ public class DB_HSQLDB implements DB {
 		
  	    while (rs.next()) {
             String tName = rs.getString("TABLE_NAME");
-            if (tName != null && tName.equals(curTableName.toString())) {
+            if (tName != null && tName.equalsIgnoreCase(curTableName.toString())) {
             	System.out.println(curTableName+" exist");
             	isTableExist = true;
             }

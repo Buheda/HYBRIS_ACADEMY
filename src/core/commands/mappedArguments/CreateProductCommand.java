@@ -31,13 +31,19 @@ public class CreateProductCommand extends BaseCommand_ArgumentsMap implements Co
 	
 	@Override
 	public boolean executeCommand() throws Exception {
-		boolean isQueryOK = true;
+		boolean isQueryOK = false;
 		
 		int id = ProductDAO.createProduct(params.get("--name"), 
 										Integer.parseInt(params.get("--price")),
 										params.get("--status"),
 										DateTimeFormatter.getNow());
-		System.out.println("Product was successfully added with id= "+id);
+		if (-1 != id) {
+			System.out.println("Product was successfully added with id= "+id);
+			isQueryOK = true;
+		} else {
+			System.err.println("Products wasn't added. Please check status");
+		}
+		
 		return isQueryOK;
 	}
 

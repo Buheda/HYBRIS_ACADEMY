@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3307
--- Время создания: Сен 19 2021 г., 22:06
+-- Время создания: Окт 03 2021 г., 16:35
 -- Версия сервера: 5.7.22
 -- Версия PHP: 7.2.4
 
@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS `orders` (
   `status` varchar(255) NOT NULL,
   `created_at` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=63 DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -48,7 +48,7 @@ CREATE TABLE IF NOT EXISTS `order_items` (
   `order_id` int(11) NOT NULL,
   `product_id` int(11) NOT NULL,
   `quantity` int(11) NOT NULL,
-  UNIQUE KEY `order_id` (`order_id`)
+  UNIQUE KEY `unique_order_item` (`order_id`,`product_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -65,17 +65,7 @@ CREATE TABLE IF NOT EXISTS `products` (
   `status` enum('out_of_stock','in_stock','running_low') NOT NULL,
   `created_at` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Ограничения внешнего ключа сохраненных таблиц
---
-
---
--- Ограничения внешнего ключа таблицы `orders`
---
-ALTER TABLE `orders`
-  ADD CONSTRAINT `delete orders` FOREIGN KEY (`id`) REFERENCES `order_items` (`order_id`) ON DELETE CASCADE;
+) ENGINE=InnoDB AUTO_INCREMENT=103 DEFAULT CHARSET=latin1;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

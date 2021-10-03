@@ -18,12 +18,12 @@ public class DBConnection {
 			InputStream input = new FileInputStream("local.properties");
 			connectionProperties = new Properties();
 			connectionProperties.load(input);
-	        if ("hsqldb".equals(connectionProperties.getProperty("db.type"))) {
+	        if ("hsqldb".equalsIgnoreCase(connectionProperties.getProperty("db.type"))) {
 		        Class.forName("org.hsqldb.jdbcDriver");
 				dbType = DBType.HSQLDB;
 	        }
-	        else if ("mysql".equals(connectionProperties.getProperty("db.type"))) {
-			    Class.forName("com.mysql.jdbc.Driver");
+	        else if ("mysql".equalsIgnoreCase(connectionProperties.getProperty("db.type"))) {
+			    Class.forName("com.mysql.cj.jdbc.Driver");
 			    dbType = DBType.MySQL;
 			}
 	        else

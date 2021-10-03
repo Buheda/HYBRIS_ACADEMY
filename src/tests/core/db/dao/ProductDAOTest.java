@@ -2,13 +2,10 @@ package tests.core.db.dao;
 
 import static org.junit.Assert.*;
 
-import java.sql.SQLIntegrityConstraintViolationException;
-
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
 
-import core.db.dao.OrderDAO;
 import core.db.dao.ProductDAO;
 import core.db.entity.Order_items;
 import core.util.DateTimeFormatter;
@@ -35,12 +32,12 @@ public class ProductDAOTest {
 		assertTrue(TestProductQueries.isProductsExistsById(productId));
 	}
 	
-	@Test(expected = SQLIntegrityConstraintViolationException.class)
-	public void testCreateProduct_False_Exception() throws Exception {
-		ProductDAO.createProduct("testProduct", 
+	@Test
+	public void testCreateProduct_False_InvalidStatus() throws Exception {
+		assertEquals(-1, ProductDAO.createProduct("testProduct", 
 				10, 
-				"fdzgdfg", 
-				DateTimeFormatter.getNow());
+				"dsgdsg", 
+				DateTimeFormatter.getNow()));
 	}
 	
 	@Test
@@ -100,12 +97,15 @@ public class ProductDAOTest {
 		TestProductQueries.createTestOrderItem(new Order_items(orderId, productId1, 1));
 		TestProductQueries.createTestOrderItem(new Order_items(orderId, productId2, 2));
 		
-		assertTrue(OrderDAO.getOrderFullInfoById(orderId).next());
+		assertFalse(ProductDAO.getAllOrderedProductsList().isEmpty());
 	}
 	
 	@Test
 	public void testGetAllOrderedProductsList_False() throws Exception {
-		assertFalse(OrderDAO.getOrderFullInfoById(10).next());
+		assertTrue(ProductDAO.getAllOrderedProductsList().isEmpty());
+		TestProductQueries.createTestProduct();
+		TestProductQueries.createTestProduct();		
+		assertTrue(ProductDAO.getAllOrderedProductsList().isEmpty());	
 	}
 
 	

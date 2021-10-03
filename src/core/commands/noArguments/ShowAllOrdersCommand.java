@@ -1,7 +1,8 @@
 package core.commands.noArguments;
 
-import java.sql.ResultSet;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
 
 import core.commands.Command;
 import core.db.dao.OrderDAO;
@@ -13,7 +14,7 @@ public class ShowAllOrdersCommand implements Command {
 		System.out.printf("|%s|%s|%s|%s|%s|\n", id, price, name, quantity, created_at);
 	}
 	
-	private void showOrdersTable(ResultSet orderList) throws Exception {
+	private void showOrdersTable(List<HashMap<Object,Object>> orderList) throws Exception {
 		int nameFieldLength = ProductDAO.getAllProducts_MaxLength();
 		
 		final String idField = "Order ID";
@@ -55,23 +56,24 @@ public class ShowAllOrdersCommand implements Command {
 						String.join("", Collections.nCopies(dateFieldLength, "-")))
 				);
 		
-	    do {
-			showOrdersTableLine(
-					String.format("%-"+idFieldLength+"s", orderList.getInt("id")),
-					String.format("%-"+priceFieldLength+"s", orderList.getInt("price")),
-					String.format("%-"+nameFieldLength+"s", orderList.getString("name")),
-					String.format("%-"+quantityFieldLength+"s", orderList.getInt("quantity")),
-					String.format("%-"+dateFieldLength+"s", orderList.getString("created_at"))				
+	    for (HashMap<Object, Object> order : orderList) {
+	    	showOrdersTableLine(
+					String.format("%-"+idFieldLength+"s", order.get("id")),
+					String.format("%-"+priceFieldLength+"s", order.get("price")),
+					String.format("%-"+nameFieldLength+"s", order.get("name")),
+					String.format("%-"+quantityFieldLength+"s", order.get("quantity")),
+					String.format("%-"+dateFieldLength+"s", order.get("created_at"))				
 					);
-		} while (orderList.next());
+		} 
+	 
 	}
 	
 	@Override
 	public boolean execute(String argsString) throws Exception {
 		boolean isQueryOK = false;
-		ResultSet orderList = OrderDAO.getAllOrdersFullInfoList();
+		List<HashMap<Object, Object>> orderList = OrderDAO.getAllOrdersFullInfoList();
 		isQueryOK = true;
-		if (!orderList.next()) {
+		if (orderList.isEmpty()) {
 			System.out.println("Orders table is empty");
 		} else {
 			showOrdersTable(orderList);

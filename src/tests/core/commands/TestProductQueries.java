@@ -2,7 +2,6 @@ package tests.core.commands;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.sql.Statement;
 
 import core.db.DBConnection;
@@ -29,7 +28,7 @@ public class TestProductQueries {
 		ResultSet rs = preparedStatement.getGeneratedKeys();
 
 		rs.next();
-		int result = rs.getInt("id");
+		int result = rs.getInt(1);
 				
 		preparedStatement.close();
 		return result;
@@ -50,13 +49,6 @@ public class TestProductQueries {
 		ResultSet rs = stmt.executeQuery("SELECT * FROM PRODUCTS where id="+id);
 		boolean result = rs.next();
 		rs.close();
-		stmt.close();
-		return result;
-	}
-	
-	public static int removeProductsById(int id) throws Exception {
-		Statement stmt =  DBConnection.getConnection().createStatement();
-		int result = stmt.executeUpdate("DELETE * FROM PRODUCTS where ID ="+id);
 		stmt.close();
 		return result;
 	}
@@ -111,10 +103,9 @@ public class TestProductQueries {
 		preparedStatement.executeUpdate(); 
 		ResultSet rs = preparedStatement.getGeneratedKeys();
 
-		int result = -1;
-		if (rs.next()) {
-			result = rs.getInt("id");
-		}
+		
+		rs.next();
+		int result = rs.getInt(1);
 		
 		preparedStatement.close();
 		return result;
@@ -129,25 +120,6 @@ public class TestProductQueries {
 		return result;
 	}
 	
-	public static boolean createOrderItem(Order_items item) throws Exception {
-		String sql = "INSERT INTO ORDER_ITEMS (order_id, product_id, quantity) Values (?, ?, ?)";
-		PreparedStatement preparedStatement = DBConnection.getConnection().prepareStatement(sql);
-		preparedStatement.setInt(1, item.getOrder_id());
-		preparedStatement.setInt(2, item.getProduct_id());
-		preparedStatement.setInt(3, item.getQuantity());
-		
-		boolean result = false;
-		try {
-			int rowCount = preparedStatement.executeUpdate();
-			result = rowCount > 0;
-		} catch (SQLIntegrityConstraintViolationException E) {
-			System.err.println("Order Item wasn't added. The same product already added to order");	
-		}
-		
-		preparedStatement.close();
-		return result;
-	}
-
 	public static void removeAllOrders() throws Exception {
 		Statement stmt =  DBConnection.getConnection().createStatement();
 		stmt.executeUpdate("DELETE FROM ORDERS");

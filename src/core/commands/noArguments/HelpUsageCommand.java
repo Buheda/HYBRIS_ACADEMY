@@ -14,8 +14,10 @@ public class HelpUsageCommand implements Command {
 		System.out.println("	Show list of all products which have been ordered");
 		System.out.println("	Show order by id");
 		System.out.println("	Show list of all orders");
-		System.out.println("	Remove product by ID. Note! you can't delete ordered products)");
-		System.out.println("	Remove all products. Note! you can't delete ordered products");
+		System.out.println("	Remove product by ID.");
+		System.out.println("			Note! you can't delete ordered products");
+		System.out.println("	Remove all products.");
+		System.out.println("			Note! you can't delete ordered products");
 		System.out.println("	exit - exit from application");
 		
 		System.out.println("Usage: ");

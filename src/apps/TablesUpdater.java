@@ -41,12 +41,12 @@ public class TablesUpdater {
 	private static boolean askYN(String question) {
 		System.out.println(question+" y/n");
 		String commandLine = scanner.nextLine();
-		while (!commandLine.equals("y") && !commandLine.equals("n")) {
+		while (!commandLine.equalsIgnoreCase("y") && !commandLine.equalsIgnoreCase("n")) {
 			System.out.println("Incorrect answer");
 			System.out.println("Do you need to drop old tables? y/n");
 			commandLine = scanner.nextLine();
 		}
-		return commandLine.equals("y");
+		return commandLine.equalsIgnoreCase("y");
 	}
 	
 	private static void dropTables() throws Exception {		
@@ -108,7 +108,7 @@ public class TablesUpdater {
 			for (int productid=0; productid< COUNT_RECORD; ++productid)
 			command.execute("--orderid "+orderId+" --productid "+productid+" --quantity "+quantity);
 		}
-		switchOnConsole();
+	    switchOnConsole();
 		
 		command = new ShowAllOrdersCommand();
 		command.execute();
@@ -124,10 +124,13 @@ public class TablesUpdater {
 			dropTables();
 		if (askYN("Do you need to create new tables?"))
 			createTables();
-		if (askYN("Do you need to generate example data?")) {
+		if (askYN("Do you need to generate products example data?")) {
 			generateProducts();
+		}
+		if (askYN("Do you need to generate orders example data?")) {
 			generateOrders();
 		}
+		
 		
 		DBConnection.getConnection().close();
 		scanner.close();

@@ -43,7 +43,7 @@ public class DB_MySql implements DB {
 		
  	    while (rs.next()) {
             String tName = rs.getString("TABLE_NAME");
-            if (tName != null && tName.equals(curTableName)) {
+            if (tName != null && tName.equalsIgnoreCase(curTableName)) {
             	System.out.println(curTableName+" exist");
             	isTableExist = true;
             }
@@ -55,7 +55,7 @@ public class DB_MySql implements DB {
 	
 	private boolean CreateTable_OrderItems(String curTableName) throws SQLException, Exception {
 		boolean isTableExist = false;
-		curTableName = "ORDE_ITEMS";
+		curTableName = "ORDER_ITEMS";
 		
 		Statement stmt =  DBConnection.getConnection().createStatement();
 		stmt.executeUpdate("CREATE TABLE IF NOT EXISTS `"+curTableName+"` ("
@@ -69,7 +69,7 @@ public class DB_MySql implements DB {
 		
  	    while (rs.next()) {
             String tName = rs.getString("TABLE_NAME");
-            if (tName != null && tName.equals(curTableName)) {
+            if (tName != null && tName.equalsIgnoreCase(curTableName)) {
             	System.out.println(curTableName+" exist");
             	isTableExist = true;
             }
@@ -97,7 +97,7 @@ public class DB_MySql implements DB {
 		
  	    while (rs.next()) {
             String tName = rs.getString("TABLE_NAME");
-            if (tName != null && tName.equals(curTableName)) {
+            if (tName != null && tName.equalsIgnoreCase(curTableName)) {
             	System.out.println(curTableName+" exist");
             	isTableExist = true;
             }
@@ -126,7 +126,7 @@ public class DB_MySql implements DB {
 		curTableName = "ORDERS";
 		
 		Statement stmt =  DBConnection.getConnection().createStatement();
-		stmt.executeUpdate("DROP TABLE `"+curTableName+"`)");  
+		stmt.executeUpdate("DROP TABLE If EXISTS "+curTableName);  
 		stmt.close();
 		return true;
 	}
@@ -135,7 +135,7 @@ public class DB_MySql implements DB {
 		curTableName = "ORDER_ITEMS";
 		
 		Statement stmt =  DBConnection.getConnection().createStatement();
-		stmt.executeUpdate("DROP TABLE `"+curTableName+"`)");  
+		stmt.executeUpdate("DROP TABLE If EXISTS "+curTableName);  
 		stmt.close();
 		return true;
 	};
@@ -144,7 +144,7 @@ public class DB_MySql implements DB {
 		curTableName = "PRODUCTS";
 		
 		Statement stmt =  DBConnection.getConnection().createStatement();
-		stmt.executeUpdate("DROP TABLE `"+curTableName+"`)");  
+		stmt.executeUpdate("DROP TABLE If EXISTS "+curTableName);  
 		stmt.close();
 		return true;
 	}

@@ -32,8 +32,12 @@ public class CreateOrderCommand extends BaseCommand_ArgumentsList implements Com
 		for (String productId : params) {
 			if (ProductDAO.isProductsExistsById(Integer.parseInt(productId))) {
 					Order_items item = new Order_items(resultOrderId, Integer.parseInt(productId), 1);
-					if (OrderDAO.createOrderItem(item))
+					if (OrderDAO.createOrderItem(item)) {
 						isOrderItemsCreated = true;
+					}
+					else {
+						System.err.println("Order Item wasn't added. The same product already added to order");	
+					}
 			}
 		}
 

@@ -14,8 +14,10 @@ public class RemoveAllProductsCommand extends BaseCommand_ArgumentsList implemen
 	protected boolean executeCommand() throws Exception {
 		boolean isQueryOK = false;
 		if (core.persistent.FinalProperties.REMOVE_ALL_PRODUCTS_PASSWORD.equals(params.get(0))) {
-			ProductDAO.removeAllProducts();
-			System.out.println("Products were successfully removed");
+			if (!ProductDAO.removeAllProducts())
+				System.out.println("there is nothing to delete");
+			else
+				System.out.println("Products were successfully removed");
 			isQueryOK = true;
 		} else {
 			System.err.println("ERROR: Incorrect password for removing all products");

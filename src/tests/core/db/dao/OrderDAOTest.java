@@ -81,13 +81,13 @@ public class OrderDAOTest {
 		
 		TestProductQueries.createTestOrderItem(new Order_items(orderId, productId1, 1));
 		TestProductQueries.createTestOrderItem(new Order_items(orderId, productId2, 2));
-		
-		assertTrue(OrderDAO.getAllOrdersFullInfoList().next());
+
+		assertFalse(OrderDAO.getAllOrdersFullInfoList().isEmpty());
 	}	
 	
 	@Test
 	public void testGetAllOrdersFullInfoList_False_NotFound()  throws Exception {	
-		assertFalse(OrderDAO.getAllOrdersFullInfoList().next());
+		assertTrue(OrderDAO.getAllOrdersFullInfoList().isEmpty());
 	}
 	
 	@Test
@@ -99,11 +99,11 @@ public class OrderDAOTest {
 		TestProductQueries.createTestOrderItem(new Order_items(orderId, productId1, 1));
 		TestProductQueries.createTestOrderItem(new Order_items(orderId, productId2, 2));
 		
-		assertTrue(OrderDAO.getOrderFullInfoById(orderId).next());
+		assertFalse(OrderDAO.getOrderFullInfoById(orderId).isEmpty());
 	}
 	
 	@Test
 	public void testGetOrderFullInfoById_False_NotFound()  throws Exception {
-		assertFalse(OrderDAO.getOrderFullInfoById(10).next());
+		assertTrue(OrderDAO.getOrderFullInfoById(10).isEmpty());
 	}	
 }
