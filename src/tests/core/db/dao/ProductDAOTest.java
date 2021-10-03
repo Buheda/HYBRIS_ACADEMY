@@ -104,8 +104,8 @@ public class ProductDAOTest {
 	}
 	
 	@Test
-	public void testGetAllOrderedProductsList_Falsee() throws Exception {
-		assertTrue(OrderDAO.getOrderFullInfoById(10).next());
+	public void testGetAllOrderedProductsList_False() throws Exception {
+		assertFalse(OrderDAO.getOrderFullInfoById(10).next());
 	}
 
 	
