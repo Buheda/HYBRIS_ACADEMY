@@ -8,8 +8,8 @@ import tests.core.db.dao.*;
 
 @RunWith(Suite.class)
 @SuiteClasses({
-	OrderDAOTests.class,
-	ProductDAOTests.class
+	OrderDAOTest.class,
+	ProductDAOTest.class
 	})
 public class DAO_TestSuite {
 

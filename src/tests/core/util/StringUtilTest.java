@@ -6,17 +6,17 @@ import org.junit.Test;
 
 import core.util.StringUtil;
 
-public class StringUtil_Test {
+public class StringUtilTest {
 
 	@Test
-	public void isEmptyString_true() {
+	public void isEmptyString_True() {
 		assertTrue(StringUtil.isEmptyString(null));
 		assertTrue(StringUtil.isEmptyString(""));
 		assertTrue(StringUtil.isEmptyString("  "));
 	}
 
 	@Test
-	public void isEmptyString_false() {
+	public void isEmptyString_False() {
 		assertFalse(StringUtil.isEmptyString(" a  "));
 	}
 }

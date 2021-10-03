@@ -9,7 +9,7 @@ import org.junit.Test;
 
 import core.util.DateTimeFormatter;
 
-public class DateTimeFormatter_Test {
+public class DateTimeFormatterTest {
 	
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("YYYY-MM-dd HH:mm");
 

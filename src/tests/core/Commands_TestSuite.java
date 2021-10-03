@@ -14,7 +14,7 @@ import tests.core.commands.mappedArguments.*;
 	UpdateOrderCommandTest.class,
 	ShowOrderByIDCommandTest.class,
 	RemoveAllProductsTest.class, 
-	RemoveProductCommandTest.class
+	RemoveProductByIDCommandTest.class
 	})
 public class Commands_TestSuite {
 

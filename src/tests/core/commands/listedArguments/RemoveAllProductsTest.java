@@ -28,30 +28,30 @@ public class RemoveAllProductsTest {
 	}
 	
 	@Test
-	public void testExecute_Valid() throws Exception {
+	public void testExecute_True() throws Exception {
 		assertTrue(command.execute(core.persistent.FinalProperties.REMOVE_ALL_PRODUCTS_PASSWORD));
 		assertFalse(TestProductQueries.isProductsExists());
 	}
 	
 	@Test
-	public void testExecute_Valid_noRecordsInDB() throws Exception {
+	public void testExecute_False_noRecordsInDB() throws Exception {
 		TestProductQueries.removeAllProducts();
 		assertFalse(TestProductQueries.isProductsExists());
 	}
 	
 	@Test
-	public void testExecute_InvalidPassword() throws Exception {
+	public void testExecute_False_InvalidPassword() throws Exception {
 		assertFalse(command.execute("fa"));
 	}
 	
 	@Test
-	public void testExecute_NoParams() throws Exception{
+	public void testExecute_False_NoParams() throws Exception{
 		assertFalse(command.execute(""));
 		assertEquals(CommandsErrors.INVALID_LIST, CommandsErrors.getLastError());
 	}
 
 	@Test
-	public void testExecute_MissingPassword_no_Params() throws Exception {
+	public void testExecute_False_MissingPassword() throws Exception {
 		assertFalse(command.execute("--param abcd"));
 	}
 }

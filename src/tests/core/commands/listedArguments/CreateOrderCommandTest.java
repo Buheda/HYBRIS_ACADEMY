@@ -25,7 +25,7 @@ public class CreateOrderCommandTest {
 	}
 	
 	@Test
-	public void testExecute_Valid_FewIds() throws Exception {
+	public void testExecute_True_FewIds() throws Exception {
 		StringBuffer cmdParamd = new StringBuffer("");
 		Integer id = TestProductQueries.createTestProduct();
 		assertTrue(TestProductQueries.isProductsExistsById(id));
@@ -39,7 +39,7 @@ public class CreateOrderCommandTest {
 	}
 
 	@Test
-	public void testExecute_InValid_DubbleProducts() throws Exception {
+	public void testExecute_True_DubbleProducts() throws Exception {
 		Integer id = TestProductQueries.createTestProduct();
 		assertTrue(TestProductQueries.isProductsExistsById(id));
 
@@ -47,19 +47,19 @@ public class CreateOrderCommandTest {
 	}
 	
 	@Test
-	public void testExecute_Invalid_NoParams() throws Exception {
+	public void testExecute_False_NoParams() throws Exception {
 		assertFalse(command.execute(""));
 		assertEquals(CommandsErrors.INVALID_LIST, CommandsErrors.getLastError());
 	}
 	
 	@Test
-	public void testExecute_Invalid_String() throws Exception {
+	public void testExecute_False_String() throws Exception {
 		assertFalse(command.execute("ds"));
 		assertEquals(CommandsErrors.INVALID_LIST, CommandsErrors.getLastError());
 	}
 	
 	@Test
-	public void testExecute_Invalid_Id() throws Exception {
+	public void testExecute_False_NotExistedId() throws Exception {
 		Integer id = TestProductQueries.createTestProduct();
 		assertTrue(TestProductQueries.isProductsExistsById(id));
 		assertFalse(command.execute((++id).toString()));

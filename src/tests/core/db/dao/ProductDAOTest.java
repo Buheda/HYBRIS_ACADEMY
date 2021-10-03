@@ -14,7 +14,7 @@ import core.db.entity.Order_items;
 import core.util.DateTimeFormatter;
 import tests.core.commands.TestProductQueries;
 
-public class ProductDAOTests {
+public class ProductDAOTest {
 
 	@Before
 	public void before() throws Exception {
@@ -36,16 +36,15 @@ public class ProductDAOTests {
 	}
 	
 	@Test(expected = SQLIntegrityConstraintViolationException.class)
-	public void testCreateProduct_False() throws Exception {
+	public void testCreateProduct_False_Exception() throws Exception {
 		ProductDAO.createProduct("testProduct", 
 				10, 
 				"fdzgdfg", 
 				DateTimeFormatter.getNow());
-		assertFalse(TestProductQueries.isProductsExists());
 	}
 	
 	@Test
-	public void testCreateProduct_Invalid_NotExists() throws Exception {
+	public void testCreateProduct_False_NotExists() throws Exception {
 		int productId = ProductDAO.createProduct("testProduct", 
 				10, 
 				"out_of_stock", 
@@ -93,7 +92,7 @@ public class ProductDAOTests {
 	}
 	
 	@Test
-	public void testGetAllOrderedProductsList() throws Exception {
+	public void testGetAllOrderedProductsList_True() throws Exception {
 		int orderId = TestProductQueries.createTestOrder();
 		int productId1 = TestProductQueries.createTestProduct();
 		int productId2 = TestProductQueries.createTestProduct();
@@ -103,9 +102,15 @@ public class ProductDAOTests {
 		
 		assertTrue(OrderDAO.getOrderFullInfoById(orderId).next());
 	}
-
+	
 	@Test
-	public void testRemoveProductsById() throws Exception {
+	public void testGetAllOrderedProductsList_Falsee() throws Exception {
+		assertTrue(OrderDAO.getOrderFullInfoById(10).next());
+	}
+
+	
+	@Test
+	public void testRemoveProductsById_True() throws Exception {
 		int productId = ProductDAO.createProduct("testProduct", 
 				100,
 				"in_stock",
@@ -117,7 +122,7 @@ public class ProductDAOTests {
 	}
 
 	@Test
-	public void testRemoveAllProducts() throws Exception {
+	public void testRemoveAllProducts_True() throws Exception {
 		TestProductQueries.createTestProduct();
 		TestProductQueries.createTestProduct();
 		assertTrue(TestProductQueries.isProductsExists());

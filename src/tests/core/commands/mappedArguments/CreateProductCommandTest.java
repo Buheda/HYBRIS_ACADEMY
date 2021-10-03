@@ -8,6 +8,7 @@ import org.junit.Test;
 
 import core.commands.mappedArguments.CreateProductCommand;
 import core.persistent.CommandsErrors;
+import tests.core.commands.TestProductQueries;
 
 public class CreateProductCommandTest {
 	
@@ -15,23 +16,23 @@ public class CreateProductCommandTest {
 	
 	@Before
 	public void before() throws Exception {
-		//TestProductQueries.cleanDB();
+		TestProductQueries.cleanDB();
 	}
 	
 	@AfterClass
 	public static void AfterClass() throws Exception {
-		//TestProductQueries.cleanDB();
+		TestProductQueries.cleanDB();
 	}
 	
 	@Test
-	public void testExecute_Valid() throws Exception {
+	public void testExecute_True() throws Exception {
 		assertTrue(command.execute("--name n --price 10 --status in_stock"));
 		assertTrue(command.execute("--price 10 --name n     --status out_of_stock"));
 		assertTrue(command.execute(" --status running_low --price 10 --name n "));
 	}
 	
 	@Test
-	public void testExecute_Invalid() throws Exception {
+	public void testExecute_False_InvalidParams() throws Exception {
 		assertFalse(command.execute("--name n"));
 		assertEquals(CommandsErrors.INVALID_KEY, CommandsErrors.getLastError());
 		assertFalse(command.execute("--price 10"));
@@ -44,13 +45,13 @@ public class CreateProductCommandTest {
 	}
 	
 	@Test
-	public void testExecute_NotEmptyCommandStr_EmptyParams() throws Exception {
+	public void testExecute_False_NotEmptyCommandStr_EmptyParams() throws Exception {
 		assertFalse(command.execute("param"));
 		assertEquals(CommandsErrors.INVALID_PARAMETERS, CommandsErrors.getLastError());
 	}
 	
 	@Test
-	public void testExecute_NoParams() throws Exception {
+	public void testExecute_False_NoParams() throws Exception {
 		assertFalse(command.execute(""));
 		assertEquals(CommandsErrors.INVALID_PARAMETERS, CommandsErrors.getLastError());
 
@@ -63,7 +64,7 @@ public class CreateProductCommandTest {
 	}
 	
 	@Test
-	public void testExecute_InvalidName() throws Exception {
+	public void testExecute_False_InvalidName() throws Exception {
 		assertFalse(command.execute("--price sdf --status 1"));
 		assertEquals(CommandsErrors.INVALID_KEY, CommandsErrors.getLastError());
 		
@@ -72,7 +73,7 @@ public class CreateProductCommandTest {
 	}
 		
 	@Test
-	public void testExecute_InvalidStatus() throws Exception {
+	public void testExecute_False_InvalidStatus() throws Exception {
 		assertFalse(command.execute("--name sdf --price 10"));
 		assertEquals(CommandsErrors.INVALID_KEY, CommandsErrors.getLastError());
 
@@ -87,7 +88,7 @@ public class CreateProductCommandTest {
 	}
 	
 	@Test
-	public void testExecute_InvalidPrice() throws Exception {
+	public void testExecute_False_InvalidPrice() throws Exception {
 		assertFalse(command.execute("--name sdf --status in_stock"));
 		assertEquals(CommandsErrors.INVALID_KEY, CommandsErrors.getLastError());
 

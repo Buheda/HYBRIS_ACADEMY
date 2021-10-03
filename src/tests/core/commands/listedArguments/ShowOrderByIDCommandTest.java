@@ -30,7 +30,7 @@ public class ShowOrderByIDCommandTest {
 	}
 	
 	@Test
-	public void testExecute_Valid() throws Exception {
+	public void testExecute_True() throws Exception {
 		assertTrue(command.execute(Integer.toString(orderId)));
 		assertTrue(command.execute(orderId+ " 12345"));
 		
@@ -38,12 +38,12 @@ public class ShowOrderByIDCommandTest {
 	}
 
 	@Test
-	public void testExecute_Invalid_Id() throws Exception {
+	public void testExecute_False_InvalidId() throws Exception {
 		assertFalse(command.execute(Integer.toString(++orderId)));
 	}
 	
 	@Test
-	public void testExecute_Invalid_StringId() throws Exception {
+	public void testExecute_False_StringId() throws Exception {
 		assertFalse(command.execute("sdfa"));
 		assertEquals(CommandsErrors.INVALID_LIST, CommandsErrors.getLastError());
 
@@ -52,7 +52,7 @@ public class ShowOrderByIDCommandTest {
 	}
 	
 	@Test
-	public void testExecute_NoParams() throws Exception {
+	public void testExecute_False_NoParams() throws Exception {
 		assertFalse(command.execute(""));
 		assertEquals(CommandsErrors.INVALID_LIST, CommandsErrors.getLastError());
 	}

@@ -28,7 +28,7 @@ public class UpdateOrderCommandTest {
 	}
 	
 	@Test
-	public void testExecuteCommand_Valid() throws Exception {
+	public void testExecuteCommand_True() throws Exception {
 		int productId1 = TestProductQueries.createTestProduct();
 		int productId2 = TestProductQueries.createTestProduct();
 		
@@ -42,13 +42,13 @@ public class UpdateOrderCommandTest {
 	}
 
 	@Test
-	public void testExecute_NoParams() throws Exception {
+	public void testExecute_False_NoParams() throws Exception {
 		assertFalse(command.execute(""));
 		assertEquals(CommandsErrors.INVALID_PARAMETERS, CommandsErrors.getLastError());
 	}
 	
 	@Test
-	public void testExecute_InvalidOrderId() throws Exception {
+	public void testExecute_False_InvalidOrderId() throws Exception {
 		assertFalse(command.execute("--productid 0 --quantity 0"));
 		assertEquals(CommandsErrors.INVALID_KEY, CommandsErrors.getLastError());
 		
@@ -60,7 +60,7 @@ public class UpdateOrderCommandTest {
 	}
 	
 	@Test
-	public void testExecute_InvalidProductId() throws Exception {
+	public void testExecute_False_InvalidProductId() throws Exception {
 		assertFalse(command.execute("--orderid 0 --quantity 0"));
 		assertEquals(CommandsErrors.INVALID_KEY, CommandsErrors.getLastError());
 		
@@ -72,7 +72,7 @@ public class UpdateOrderCommandTest {
 	}
 	
 	@Test
-	public void testExecute_InvalidQuantity() throws Exception {
+	public void testExecute_False_InvalidQuantity() throws Exception {
 		assertFalse(command.execute("--orderid 0 --productid 0"));
 		assertEquals(CommandsErrors.INVALID_KEY, CommandsErrors.getLastError());
 		
@@ -84,7 +84,7 @@ public class UpdateOrderCommandTest {
 	}
 	
 	@Test
-	public void testExecute_NothingToUpdate() throws Exception {		
+	public void testExecute_False_NothingToUpdate() throws Exception {		
 		assertFalse(command.execute("--orderid -1 --productid -1 --quantity 10"));
 	}
 }

@@ -11,7 +11,7 @@ import core.db.entity.Order_items;
 import core.util.DateTimeFormatter;
 import tests.core.commands.TestProductQueries;
 
-public class OrderDAOTests {
+public class OrderDAOTest {
 
 	@Before
 	public void before() throws Exception {
@@ -24,7 +24,7 @@ public class OrderDAOTests {
 	}
 	
 	@Test
-	public void testCreateOrder_valid() throws Exception {
+	public void testCreateOrder_True() throws Exception {
 		int orderId = OrderDAO.createOrder(100, 
 				"in_stock", 
 				DateTimeFormatter.timestampToStr(DateTimeFormatter.getNow()));
@@ -32,7 +32,7 @@ public class OrderDAOTests {
 	}
 
 	@Test
-	public void testCreateOrder_Invalid_NotExists() throws Exception {
+	public void testCreateOrder_False_NotExists() throws Exception {
 		int orderId = OrderDAO.createOrder(100, 
 				"in_stock", 
 				DateTimeFormatter.timestampToStr(DateTimeFormatter.getNow()));
@@ -40,12 +40,12 @@ public class OrderDAOTests {
 	}
 		
 	@Test
-	public void testCreateOrderItem() throws Exception {
+	public void testCreateOrderItem_True() throws Exception {
 		assertTrue(OrderDAO.createOrderItem(new Order_items(10, 100, 1)));	
 	}
 	
 	@Test
-	public void removeOrderById()  throws Exception {
+	public void removeOrderById_True()  throws Exception {
 		int orderId = OrderDAO.createOrder(100, 
 				"in_stock", 
 				DateTimeFormatter.timestampToStr(DateTimeFormatter.getNow()));
@@ -57,7 +57,7 @@ public class OrderDAOTests {
 	}
 	
 	@Test
-	public void testCreateOrderItem_Invalid_AlreadyExists() throws Exception {
+	public void testCreateOrderItem_False_AlreadyExists() throws Exception {
 		assertTrue(OrderDAO.createOrderItem(new Order_items(10, 100, 1)));
 		assertFalse(OrderDAO.createOrderItem(new Order_items(10, 100, 1)));	
 	}
@@ -74,7 +74,7 @@ public class OrderDAOTests {
 	}
 	
 	@Test
-	public void testGetAllOrdersFullInfoList()  throws Exception {
+	public void testGetAllOrdersFullInfoList_True()  throws Exception {
 		int orderId = TestProductQueries.createTestOrder();
 		int productId1 = TestProductQueries.createTestProduct();
 		int productId2 = TestProductQueries.createTestProduct();
@@ -86,12 +86,12 @@ public class OrderDAOTests {
 	}	
 	
 	@Test
-	public void testGetAllOrdersFullInfoList_NotFound()  throws Exception {	
+	public void testGetAllOrdersFullInfoList_False_NotFound()  throws Exception {	
 		assertFalse(OrderDAO.getAllOrdersFullInfoList().next());
 	}
 	
 	@Test
-	public void testGetOrderFullInfoById()  throws Exception {
+	public void testGetOrderFullInfoById_True()  throws Exception {
 		int orderId = TestProductQueries.createTestOrder();
 		int productId1 = TestProductQueries.createTestProduct();
 		int productId2 = TestProductQueries.createTestProduct();
@@ -103,7 +103,7 @@ public class OrderDAOTests {
 	}
 	
 	@Test
-	public void testGetOrderFullInfoById_NotFound()  throws Exception {
+	public void testGetOrderFullInfoById_False_NotFound()  throws Exception {
 		assertFalse(OrderDAO.getOrderFullInfoById(10).next());
 	}	
 }

@@ -10,7 +10,7 @@ import core.commands.listedArguments.RemoveProductByIDCommand;
 import core.persistent.CommandsErrors;
 import tests.core.commands.TestProductQueries;
 
-public class RemoveProductCommandTest {
+public class RemoveProductByIDCommandTest {
 
 	RemoveProductByIDCommand command = new RemoveProductByIDCommand();
 		
@@ -25,7 +25,7 @@ public class RemoveProductCommandTest {
 	}
 	
 	@Test
-	public void testExecute_Valid() throws Exception {
+	public void testExecute_True() throws Exception {
 		Integer id = TestProductQueries.createTestProduct();
 		assertTrue(TestProductQueries.isProductsExistsById(id));
 				
@@ -42,20 +42,20 @@ public class RemoveProductCommandTest {
 	}
 
 	@Test
-	public void testExecute_InvalidId() throws Exception {
+	public void testExecute_False_InvalidId() throws Exception {
 		Integer id = TestProductQueries.createTestProduct();
 		assertFalse(TestProductQueries.isProductsExistsById(++id));
 		assertTrue(command.execute(id.toString()));	
 	}
 	
 	@Test
-	public void testExecute_StringId() throws Exception {
+	public void testExecute_False_StringId() throws Exception {
 		assertFalse(command.execute("sdfa"));
 		assertEquals(CommandsErrors.INVALID_LIST, CommandsErrors.getLastError());
 	}
 	
 	@Test
-	public void testExecute_NoParams() throws Exception {
+	public void testExecute_False_NoParams() throws Exception {
 		assertFalse(command.execute(""));
 		assertEquals(CommandsErrors.INVALID_LIST, CommandsErrors.getLastError());
 	}
