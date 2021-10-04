@@ -28,6 +28,7 @@ bat:
 > java -cp classes;lib/mysql-connector.jar;lib/hsqldb.jar apps/ShopApplication update_order --orderid 10 --productid 10 --quantity 10
 
 For details see 'help' and  [/standalone_jar/runShopApplicationExamples.txt](standalone_jar/runShopApplicationExamples.txt)
+
 Password for removing all products (except ordered): fghj
 
 ##### *JUnit tests*
